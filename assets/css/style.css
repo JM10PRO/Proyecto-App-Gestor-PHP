@@ -1,0 +1,45 @@
+#encabezado {
+    background-color: #c2492b;
+    color: #fff;
+    text-align: center;
+    font-size: 2em;
+    padding: 0.5em;
+}
+
+#menu {
+    background-color: #c2862b;
+    float: left;
+    width: 8em;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    margin-right: 1em;
+}
+
+#pie {
+    background-color: #262423;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+    clear: both;
+}
+
+ul, li {
+    background-color: #c2862b;
+
+}
+
+a:link {
+    color: #000;
+}
+
+a:visited {
+    color: #000;
+}
+
+a:hover {
+    color: #f00;
+}
+
+a:active {
+    color: #2b49c2;
+}
