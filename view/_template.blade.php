@@ -25,10 +25,7 @@ Igualmente nuestra aplicación podría tener tantos layouts como deseasemos
 
 <body>
     <header>
-        <div id="encabezado">
-            Bunglebuild S.L
-        </div>
-        <nav id="menu" class="navbar bg-light">
+        <nav id="encabezado" class="navbar">
             @include('menu')
         </nav>
     </header>

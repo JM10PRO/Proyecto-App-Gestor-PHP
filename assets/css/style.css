@@ -1,11 +1,11 @@
 #encabezado {
-    background-color: #c2492b;
     color: #fff;
     text-align: center;
-    font-size: 2em;
     padding: 0.5em;
 }
-
+.navbar {
+    background-color: #c2492b;
+}
 #menu {
     background-color: #c2862b;
     float: left;
@@ -23,11 +23,9 @@
     clear: both;
 }
 
-ul, li {
-    background-color: #c2862b;
-
+a {
+    text-decoration: none;
 }
-
 a:link {
     color: #000;
 }
