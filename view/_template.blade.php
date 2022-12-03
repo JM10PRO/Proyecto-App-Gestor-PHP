@@ -25,7 +25,7 @@ Igualmente nuestra aplicación podría tener tantos layouts como deseasemos
 
 <body>
     <header>
-        <nav id="encabezado" class="navbar">
+        <nav class="navbar navbar-expand-lg" id="encabezado">
             @include('menu')
         </nav>
     </header>
