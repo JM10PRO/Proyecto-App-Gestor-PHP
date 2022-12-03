@@ -3,9 +3,24 @@
     text-align: center;
     padding: 0.5em;
 }
+
 .navbar {
     background-color: #c2492b;
 }
+
+.navbar-brand {
+    font-size: 1.7rem;
+}
+
+.nav-pills {
+    --bs-nav-pills-link-active-bg: #fd610d;
+}
+
+.nav-item {
+    margin-left: 100px;
+    font-size: 1.3rem;
+}
+
 #menu {
     background-color: #c2862b;
     float: left;
@@ -41,4 +56,12 @@ a:hover {
 
 a:active {
     color: #2b49c2;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+#cuerpo {
+    padding: 3px;
 }
