@@ -62,7 +62,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
     /* Session->onlyLogged() chequea si esta logeado y si no está devuelve una redirección
     y finaliza el script (no continua el código)
     */
-    // Session::getInstance()->onlyLogged();
+    Session::getInstance()->onlyLogged();
     return (new TareasCtrl())->Inicio();
 });
 
@@ -100,8 +100,8 @@ $app->get('/del', function (Request $request, Response $response, $args) {
 
 
 // Página de prueba
-$app->get('/pag1', function (Request $request, Response $response, $args) {
-    return (new TareasCtrl())->Pag1();
+$app->get('/nuevatarea', function (Request $request, Response $response, $args) {
+    return (new TareasCtrl())->NuevaTarea();
 });
 
 

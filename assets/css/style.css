@@ -1,3 +1,11 @@
+body {
+    background-color: rgb(255, 240, 220);
+}
+
+.table {
+    background-color: #fff;
+}
+
 #encabezado {
     color: #fff;
     text-align: center;
@@ -10,6 +18,7 @@
 
 .navbar-brand {
     font-size: 1.7rem;
+    margin: 0.7rem;
 }
 
 .nav-pills {
@@ -17,17 +26,9 @@
 }
 
 .nav-item {
-    margin-left: 100px;
+    margin: 0.7rem;
+    margin-left: 4rem;
     font-size: 1.3rem;
-}
-
-#menu {
-    background-color: #c2862b;
-    float: left;
-    width: 8em;
-    border-radius: 5px;
-    border: 1px solid #aaa;
-    margin-right: 1em;
 }
 
 #pie {
@@ -63,5 +64,5 @@ h1 {
 }
 
 #cuerpo {
-    padding: 3px;
+    padding: 1rem;
 }

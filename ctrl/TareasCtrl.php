@@ -56,10 +56,10 @@ class TareasCtrl
     /**
      * Muestra la página Pag1
      */
-    public function Pag1()
+    public function NuevaTarea()
     {
         // En un controlador real esto haría más cosas
-        return $this->blade->render('pag1');
+        return $this->blade->render('nuevatarea');
     }
 
     /**
