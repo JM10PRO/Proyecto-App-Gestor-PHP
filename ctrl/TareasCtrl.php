@@ -54,12 +54,66 @@ class TareasCtrl
     }
 
     /**
-     * Muestra la página Pag1
+     * Muestra la página para registrar nuevas tareas
      */
     public function NuevaTarea()
     {
+        if (!$_POST) {
+            // Primera vez.
+            $tarea = array(
+                'nif' =>  '',
+                'nombre' => '',
+                'apellidos' => '',
+                'telefono' => '',
+                'correo' => '',
+                'poblacion' => '',
+                'codpostal' => '',
+                'provincia' => '',
+                'direccion' => '',
+                'estado' => '',
+                'fechacreacion' => '',
+                'operario' => '',
+                'fechatarea' => '',
+                'anotacionanterior' => '',
+                'anotacionposterior' => '',
+                'descripcion' => '',
+                'ficheroresumen' => '',
+                'fotos' => ''
+            );
+        } else {
+            // Filtrar datos
+            $this->FiltraCamposPost();
+
+            // Creamos el objeto tarea que es el que se utiliza en el formulario
+            // Lo creamos a partir de los datos recibidos del POST
+            $tarea = array(
+                'nif' =>  VPost('nif'),
+                'nombre' => VPost('nombre')
+            );
+
+            if (!$this->errores->HayErrores()) {
+                // Guardamos la tarea y finalizamos
+                $this->model->Add($tarea);
+                Session::redirect('/listar');
+            }
+        }
+        // Mostramos los datos
+        return $this->blade->render('nuevatarea', array(
+            'operacion' => 'Registrar nueva tarea',
+            'tarea' => $tarea,
+            'errores' => $this->errores
+        ));
         // En un controlador real esto haría más cosas
         return $this->blade->render('nuevatarea');
+    }
+
+    /**
+     * Muestra la página para registrar nuevas tareas
+     */
+    public function ConfNuevaTarea()
+    {
+        // En un controlador real esto haría más cosas
+        return $this->blade->render('confnuevatarea');
     }
 
     /**
@@ -174,7 +228,7 @@ class TareasCtrl
     }
 
     /**
-     * Añade una nueva tarea
+     * Borra una nueva tarea
      * @return type
      */
     public function Del()
@@ -210,19 +264,108 @@ class TareasCtrl
      */
     public function FiltraCamposPost()
     {
+        // Filtramos el nif
+        if (VPost('nif') == '') {
+            $this->errores->AnotaError('nif', 'Se debe introducir texto');
+        } elseif (strlen(VPost('nif')) < 9 || strlen(VPost('nif')) > 9) {
+            $this->errores->AnotaError('nif', 'El NIF debe tener 9 letras');
+        } elseif (validateNif('nif')) {
+            $this->errores->AnotaError('nif', 'El NIF no es correcto');
+        }
+
         // Filtramos el nombre
         if (VPost('nombre') == '') {
             $this->errores->AnotaError('nombre', 'Se debe introducir texto');
-        } elseif (strlen(VPost('nombre')) < 5) {
-            $this->errores->AnotaError('nombre', 'El nombre debe tener al menos 5 letras');
         }
 
-        // Filtramos la prioridad
-        $prioridad = VPost('prioridad');
-        if ($prioridad == '') {
-            $this->errores->AnotaError('prioridad', 'Se debe introducir texto');
-        } elseif (!is_numeric($prioridad) || ($prioridad < 1 || $prioridad > 5)) {
-            $this->errores->AnotaError('prioridad', 'La prioridad debe ser un número entre 1 y 5');
+        // Filtramos los apellidos
+        if (VPost('apellidos') == '') {
+            $this->errores->AnotaError('apellidos', 'Se debe introducir texto');
         }
+
+        // Filtramos el telefono
+        if (VPost('telefono') == '') {
+            $this->errores->AnotaError('telefono', 'Se debe introducir texto');
+        } elseif (!is_string($_POST['telefono'])) {
+            $this->errores->AnotaError('telefono', "Compruebe el número de teléfono");
+        } elseif (strlen(VPost('telefono')) < 9) {
+            $this->errores->AnotaError('telefono', 'El telefono debe tener 9 digitos');
+        }
+
+        // Filtramos el correo
+        if (VPost('correo') == '') {
+            $this->errores->AnotaError('correo', 'Se debe introducir texto');
+        } elseif (filter_input(INPUT_POST, 'correo', FILTER_VALIDATE_EMAIL) == '') {
+            $this->errores->AnotaError('correo', "El correo no válido");
+        }
+
+        // Filtramos la población
+        if (VPost('poblacion') == '') {
+            $this->errores->AnotaError('poblacion', 'Se debe introducir texto');
+        }
+
+        // Filtramos el código postal
+        if (VPost('codpostal') == '') {
+            $this->errores->AnotaError('codpostal', 'Se debe introducir texto');
+        }
+
+        // Filtramos la provincia
+        if (VPost('provincia') == '') {
+            $this->errores->AnotaError('provincia', 'Se debe introducir texto');
+        }
+
+        // Filtramos la dirección
+        if (VPost('direccion') == '') {
+            $this->errores->AnotaError('direccion', 'Se debe introducir texto');
+        }
+
+        // Filtramos el estado de la tarea
+        if (VPost('estado') == '') {
+            $this->errores->AnotaError('estado', 'Se debe seleccionar una de las opciones');
+        } elseif (VPost('estado') != "B" && VPost('estado') != "P" && VPost('estado') != "R" && VPost('estado') != "C") {
+            $this->errores->AnotaError('estado', "Por favor, indica el estado de la tarea");
+        }
+
+        // Filtramos y definimos la fecha de creación de la tarea
+        $_POST['fechacreacion'] = date("d-m-y");
+        if (VPost('fechacreacion') == '') {
+            $this->errores->AnotaError('fechacreacion', 'Se debe introducir una fecha');
+        }
+
+        // Filtramos el operario
+        if (VPost('operario') == '') {
+            $this->errores->AnotaError('operario', 'Se debe introducir texto');
+        }elseif(is_numeric(VPost('operario'))){
+            $this->errores->AnotaError('operario', "Por favor, introduce un nombre sin números ni carácteres especiales");
+        }
+
+        if (VPost('fechatarea') == '') {
+            $this->errores->AnotaError('fechatarea', 'Se debe introducir una fecha');
+        }
+
+        // // Filtramos la prioridad
+        // $prioridad = VPost('prioridad');
+        // if ($prioridad == '') {
+        //     $this->errores->AnotaError('prioridad', 'Se debe introducir texto');
+        // } elseif (!is_numeric($prioridad) || ($prioridad < 1 || $prioridad > 5)) {
+        //     $this->errores->AnotaError('prioridad', 'La prioridad debe ser un número entre 1 y 5');
+        // }
     }
+    // public function FiltraCamposPost()
+    // {
+    //     // Filtramos el nombre
+    //     if (VPost('nombre') == '') {
+    //         $this->errores->AnotaError('nombre', 'Se debe introducir texto');
+    //     } elseif (strlen(VPost('nombre')) < 5) {
+    //         $this->errores->AnotaError('nombre', 'El nombre debe tener al menos 5 letras');
+    //     }
+
+    //     // Filtramos la prioridad
+    //     $prioridad = VPost('prioridad');
+    //     if ($prioridad == '') {
+    //         $this->errores->AnotaError('prioridad', 'Se debe introducir texto');
+    //     } elseif (!is_numeric($prioridad) || ($prioridad < 1 || $prioridad > 5)) {
+    //         $this->errores->AnotaError('prioridad', 'La prioridad debe ser un número entre 1 y 5');
+    //     }
+    // }
 }

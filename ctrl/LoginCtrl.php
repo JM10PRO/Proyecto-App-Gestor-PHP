@@ -48,8 +48,8 @@ class LoginCtrl
                 filter_input(INPUT_POST, 'user'),
                 filter_input(INPUT_POST, 'passwd')
             )) {
-                // Ha entrado, redirigimos a la página de inicio
-                Session::redirect('/');
+                // Ha entrado, redirigimos a la página de listar tareas
+                Session::redirect('/listar');
                 // Aquí no se llega, redirect ha finalizao el script
             }
             // Login fallido, hay error
