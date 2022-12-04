@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form action=<?= MODEL_PATH ?>."form-admin-validacion.php" method="post">
+    <form action="<?= MODEL_PATH.'form-admin-validacion.php' ?>" method="post">
         <fieldset>
             <legend>Datos persona de contacto:</legend>
             <label for="nif">NIF / CIF:</label>
@@ -96,14 +96,14 @@
             <label for="fechacreacion">Fecha de creación de la tarea:</label>
             <input type="date" name="fechacreacion" id="" readonly> <br><br> 
             <label for="operario">Operario encargado:</label>
-            <input type="text" name="operario" id="" value=" <?= (isset($_POST['operario'])) ? $_POST['operario'] : ""; ?> "> <?=$error->ErrorFormateado('operario');?> <br><br> 
+            <input type="text" name="operario" id="" value="<?= (isset($_POST['operario'])) ? $_POST['operario'] : ""; ?>"> <?=$error->ErrorFormateado('operario');?> <br><br> 
             <label for="fechatarea">Fecha de realización:</label>
-            <input type="date" name="fechatarea" id="" value=" <?= (isset($_POST['fechatarea'])) ? $_POST['fechatarea'] : ""; ?> "> <?=$error->ErrorFormateado('fechatarea');?> <br><br> 
+            <input type="date" name="fechatarea" id="" value="<?= (isset($_POST['fechatarea'])) ? $_POST['fechatarea'] : ""; ?>"> <?=$error->ErrorFormateado('fechatarea');?> <br><br> 
             <label for="anotacionanterior">Anotaciones anteriores:</label>
-            <input type="text" name="anotacionanterior" id="" value=" <?= (isset($_POST['anotacionanterior'])) ? $_POST['anotacionanterior'] : ""; ?> "> <?=$error->ErrorFormateado('anotacionanterior');?> <br><br> 
+            <input type="text" name="anotacionanterior" id="" value="<?= (isset($_POST['anotacionanterior'])) ? $_POST['anotacionanterior'] : ""; ?>"> <?=$error->ErrorFormateado('anotacionanterior');?> <br><br> 
             <label for="anotacionposterior">Anotaciones posteriores:</label>
-            <input type="text" name="anotacionposterior" id="" value=" <?= (isset($_POST['anotacionposterior'])) ? $_POST['anotacionposterior'] : ""; ?> "> <?=$error->ErrorFormateado('anotacionposterior');?> <br><br> 
-            <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añada una descripción de la tarea..." value=" <?= (isset($_POST['descripcion'])) ? $_POST['descripcion'] : ""; ?> "></textarea> <?=$error->ErrorFormateado('descripcion');?> <br><br>
+            <input type="text" name="anotacionposterior" id="" value="<?= (isset($_POST['anotacionposterior'])) ? $_POST['anotacionposterior'] : ""; ?>"> <?=$error->ErrorFormateado('anotacionposterior');?> <br><br> 
+            <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añada una descripción de la tarea..." value="<?= (isset($_POST['descripcion'])) ? $_POST['descripcion'] : ""; ?>"></textarea> <?=$error->ErrorFormateado('descripcion');?> <br><br>
             <label for="ficheroresumen">Fichero resumen de tareas realizadas:</label>
             <input type="file" name="ficheroresumen" id=""> <br><br> 
             <label for="fotos">Fotos del trabajo realizado:</label>
