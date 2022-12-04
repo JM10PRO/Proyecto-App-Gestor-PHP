@@ -26,6 +26,29 @@ if (!function_exists('VPost')) {
 
 if (!function_exists('validateNif')) {
 
+    function validarNif($nif)
+    {
+        if(strlen($nif) != 9){
+            echo 'no valido 1';
+
+        }
+        if(is_numeric($nif)){
+            echo 'no valido 2';
+
+        }
+        $num = substr($nif, 0, 8);
+        $nif[strlen($nif)] = strtoupper($nif[strlen($nif)]);
+        $nif_codes = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        if(($nif[8] == $nif_codes[$num % 23])){
+            echo 'valido';
+        }else{
+            echo 'no valido 3';
+        }
+    }
+}
+
+if (!function_exists('validateNif')) {
+
     function validateNif($nif)
     {
         $nif_codes = 'TRWAGMYFPDXBNJZSQVHLCKE';
@@ -60,10 +83,10 @@ if (!function_exists('getCifSum')) {
 
     function getCifSum($cif)
     {
-        $sum = $cif[2] + $cif[4] + $cif[6];
-
-        for ($i = 1; $i < 8; $i += 2) {
-            $tmp = (string) (2 * $cif[$i]);
+        //$sum = intval($cif[2]) + intval($cif[4]) + intval($cif[6]);
+        $sum = 0;
+        for ($i = 1; $i < 8 && $i < strlen($cif); $i += 2) {
+            $tmp = (string) (2 * intval($cif[$i]));
 
             $tmp = $tmp[0] + ((strlen($tmp) == 2) ?  $tmp[1] : 0);
 
