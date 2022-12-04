@@ -14,6 +14,7 @@
     <thead>
         <tr>
             <td>Id</td>
+            <td>NIF</td>
             <td>Nombre</td>
             <td>Apellidos</td>
             <td>Teléfono</td>

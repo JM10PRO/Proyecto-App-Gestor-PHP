@@ -268,10 +268,11 @@ class TareasCtrl
         if (VPost('nif') == '') {
             $this->errores->AnotaError('nif', 'Se debe introducir texto');
         } elseif (strlen(VPost('nif')) < 9 || strlen(VPost('nif')) > 9) {
-            $this->errores->AnotaError('nif', 'El NIF debe tener 9 letras');
-        } elseif (validateNif('nif')) {
-            $this->errores->AnotaError('nif', 'El NIF no es correcto');
-        }
+            $this->errores->AnotaError('nif', 'El NIF debe tener 8 dígitos y una letra');
+        } 
+        // elseif (!validateNif('nif')) {
+        //     $this->errores->AnotaError('nif', 'El NIF no es correcto');
+        // }
 
         // Filtramos el nombre
         if (VPost('nombre') == '') {
