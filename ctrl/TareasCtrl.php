@@ -88,7 +88,23 @@ class TareasCtrl
             // Lo creamos a partir de los datos recibidos del POST
             $tarea = array(
                 'nif' =>  VPost('nif'),
-                'nombre' => VPost('nombre')
+                'nombre' => VPost('nombre'),
+                'apellidos' => VPost('apellidos'),
+                'telefono' => VPost('telefono'),
+                'correo' => VPost('correo'),
+                'poblacion' => VPost('poblacion'),
+                'codpostal' => VPost('codpostal'),
+                'provincia' => VPost('provincia'),
+                'direccion' => VPost('direccion'),
+                'estado' => VPost('estado'),
+                'fechacreacion' => VPost('fechacreacion'),
+                'operario' => VPost('operario'),
+                'fechatarea' => VPost('fechatarea'),
+                'anotacionanterior' => VPost('anotacionanterior'),
+                'anotacionposterior' => VPost('anotacionposterior'),
+                'descripcion' => VPost('descripcion'),
+                'ficheroresumen' => VPost('ficheroresumen'),
+                'fotos' => VPost('fotos'),
             );
 
             if (!$this->errores->HayErrores()) {
@@ -269,7 +285,7 @@ class TareasCtrl
             $this->errores->AnotaError('nif', 'Se debe introducir texto');
         } elseif (strlen(VPost('nif')) < 9 || strlen(VPost('nif')) > 9) {
             $this->errores->AnotaError('nif', 'El NIF debe tener 8 dígitos y una letra');
-        } elseif (!validarNie('nif')) {
+        } elseif (!validarNie(VPost('nif'))) {
             $this->errores->AnotaError('nif', 'El NIF no es correcto');
         }
 
@@ -289,7 +305,7 @@ class TareasCtrl
         } elseif (!is_string($_POST['telefono'])) {
             $this->errores->AnotaError('telefono', "Compruebe el número de teléfono");
         } elseif (strlen(VPost('telefono')) < 9) {
-            $this->errores->AnotaError('telefono', 'El telefono debe tener 9 digitos');
+            $this->errores->AnotaError('telefono', 'El teléfono debe tener 9 digitos');
         }
 
         // Filtramos el correo
@@ -335,7 +351,7 @@ class TareasCtrl
         // Filtramos el operario
         if (VPost('operario') == '') {
             $this->errores->AnotaError('operario', 'Se debe introducir texto');
-        }elseif(is_numeric(VPost('operario'))){
+        } elseif (is_numeric(VPost('operario'))) {
             $this->errores->AnotaError('operario', "Por favor, introduce un nombre sin números ni carácteres especiales");
         }
 
