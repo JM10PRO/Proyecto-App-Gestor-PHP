@@ -47,7 +47,7 @@
             <td>{{$tarea['fotos']}}</td>
             <td>
                 <a class="btn btn-primary" href="<?= BASE_URL ?>edit?id={{$tarea['id']}}">Modificar</a>
-                <a class="btn btn-danger" href="<?= BASE_URL ?>del?id={{$tarea['id']}}">Borrar</a>
+                <a class="btn btn-danger" href="<?= BASE_URL ?>confirmardelete?id={{$tarea['id']}}">Borrar</a>
             </td>
         </tr>
         @endforeach

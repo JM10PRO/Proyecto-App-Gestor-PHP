@@ -59,5 +59,6 @@ class Tareas_Model
     public function Del($id)
     {
         // En construcción
+        return DB::getInstance()->delete('tareas', $id);
     }
 }

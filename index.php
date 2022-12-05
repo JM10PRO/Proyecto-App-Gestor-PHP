@@ -78,11 +78,6 @@ $app->any('/nuevatarea', function (Request $request, Response $response, $args) 
     return (new TareasCtrl())->NuevaTarea();
 });
 
-//Confirmación registrar nueva tarea
-$app->any('/confnuevatarea', function (Request $request, Response $response, $args) {
-    return (new TareasCtrl())->ConfNuevaTarea();
-});
-
 // Alta
 // Observad que aquí no se pone 'get' pues la petición puede llegar por GET o por POST
 $app->post('/add', function (Request $request, Response $response, $args) {
@@ -107,6 +102,11 @@ $app->any('/edit', function (Request $request, Response $response, $args) {
 $app->get('/del', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyLogged();
     return (new TareasCtrl())->Del();
+});
+
+//Confirmación borrar tarea
+$app->any('/confirmardelete', function (Request $request, Response $response, $args) {
+    return (new TareasCtrl())->ConfirmarDelete();
 });
 
 

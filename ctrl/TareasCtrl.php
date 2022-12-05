@@ -124,15 +124,6 @@ class TareasCtrl
     }
 
     /**
-     * Muestra la página para registrar nuevas tareas
-     */
-    public function ConfNuevaTarea()
-    {
-        // En un controlador real esto haría más cosas
-        return $this->blade->render('confnuevatarea');
-    }
-
-    /**
      * Muestra la lista de tareas
      */
     public function Listar()
@@ -260,6 +251,23 @@ class TareasCtrl
     }
 
     /**
+     * Muestra la página para registrar nuevas tareas
+     */
+    public function ConfirmarDelete()
+    {
+        if (isset($_GET['id'])) {
+            // Han indicado el id
+            $id = $_GET['id'];
+        }
+
+        $tarea = $this->model->GetTarea($id);
+
+        // En un controlador real esto haría más cosas
+        return $this->blade->render('confirmardelete',['tarea'=>$tarea]);
+    }
+
+
+    /**
      * Borra una nueva tarea
      * @return type
      */
@@ -280,7 +288,7 @@ class TareasCtrl
             }
         } catch (Exception $ex) {
             return $this->blade->render('msg', [
-                'descripcion' => 'No existe la tarea seleccionada para borrar'
+                'descripcion' => 'No existe la tarea seleccionada para borrar.'
             ]);
         }
     }
