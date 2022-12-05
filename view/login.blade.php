@@ -1,4 +1,4 @@
-@extends('_template')
+@extends('logintemplate')
 
 @section('cuerpo')
     <div style="width:30em; margin:1em auto; padding:.5em; border:1px solid #999">
