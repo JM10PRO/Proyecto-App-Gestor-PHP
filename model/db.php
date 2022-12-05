@@ -64,6 +64,46 @@ class Db
 			->execute($valores_campos);
 	}
 
+	/**
+	 * Genera al vuelo la consulta insert into para los campos que le indicamos
+	 * en la tabla indicada
+	 *
+	 * @param string $tabla
+	 * @param array $campos
+	 * @return bool
+	 */
+	public function update(string $tabla, $campos, $id): bool
+	{
+		// $nombre_campos = implode(',', array_keys($campos)); // => c1, c2,...
+		$valores_campos = array_values($campos); // => v1, v2, ..
+		// $interrogaciones = implode(',', array_map(fn ($v) => '?', $campos));
+
+		$sql = "UPDATE $tabla SET ";
+
+		$fin = count($campos);
+		$count = 0;
+		foreach($campos as $key => $value){
+			$count++;
+			$sql .= "$key='$value'";
+			if($count!=$fin){
+				$sql .= ",";
+			}
+		}
+
+		$sql .= " WHERE id=$id";
+
+		/*
+		// Para depuración
+		echo "<pre>SQL: $sql \n \nValores \n";
+		print_r($valores_campos);
+		exit;
+		*/
+
+		return $this->pdo
+			->prepare($sql)
+			->execute();
+	}
+
 
 	/**
 	 * Devuelve el registro de la tabla indicada cuyo valor es igual que el indicado en $search_value 

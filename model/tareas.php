@@ -40,6 +40,7 @@ class Tareas_Model
     public function Update($id, $tarea)
     {
         // En construcción
+        return Db::getInstance()->update('tareas', $tarea, $id);
     }
 
     /**

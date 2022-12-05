@@ -168,7 +168,7 @@ class TareasCtrl
             if (!$tarea) {
                 // No existe la tarea, error
                 return $this->blade->render('edit_error', [
-                    'descripcion_error' => 'No existe la tarea seleccionada'
+                    'descripcion_error' => 'No existe la tarea seleccionada.'
                 ]);
             } else {
                 // Mostramos los datos
@@ -185,8 +185,24 @@ class TareasCtrl
             // Creamos el objeto tarea que es el que se utiliza en el formulario
             // Lo creamos a partir de los datos recibidos del POST
             $tarea = array(
-                'nombre' =>  VPost('nombre'),
-                'prioridad' => VPost('prioridad')
+                'nif' =>  VPost('nif'),
+                'nombre' => VPost('nombre'),
+                'apellidos' => VPost('apellidos'),
+                'telefono' => VPost('telefono'),
+                'correo' => VPost('correo'),
+                'poblacion' => VPost('poblacion'),
+                'codpostal' => VPost('codpostal'),
+                'provincia' => VPost('provincia'),
+                'direccion' => VPost('direccion'),
+                'estado' => VPost('estado'),
+                'fechacreacion' => VPost('fechacreacion'),
+                'operario' => VPost('operario'),
+                'fechatarea' => VPost('fechatarea'),
+                'anotacionanterior' => VPost('anotacionanterior'),
+                'anotacionposterior' => VPost('anotacionposterior'),
+                'descripcion' => VPost('descripcion'),
+                'ficheroresumen' => VPost('ficheroresumen'),
+                'fotos' => VPost('fotos'),
             );
 
             if ($this->errores->HayErrores()) {
