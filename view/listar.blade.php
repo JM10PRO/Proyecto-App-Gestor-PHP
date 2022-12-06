@@ -45,6 +45,10 @@
 
 <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-left">
+        <!-- Ir a la primera página -->
+            <li class="page-item">
+                <a class="page-link" href="?pagina=1"> Primera página </a>
+            </li>
         <!-- Ir a la página anterior -->
         @if($pagactual == 1)
             <li class="page-item disabled">
@@ -69,6 +73,10 @@
                 <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
             </li>      
         @endif
+        <!-- Ir a la última página -->
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{$totalpags}}"> Última página </a>
+            </li>
     </ul>
 </nav>
 @endsection
