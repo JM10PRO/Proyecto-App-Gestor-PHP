@@ -119,20 +119,78 @@ class TareasCtrl
             'tarea' => $tarea,
             'errores' => $this->errores
         ));
-        // En un controlador real esto haría más cosas
-        return $this->blade->render('nuevatarea');
+        // // En un controlador real esto haría más cosas
+        // return $this->blade->render('nuevatarea');
     }
+
+    // /**
+    //  * Muestra la lista de tareas
+    //  */
+    // public function Listar()
+    // {
+    //     // $tareas = $this->model->GetTareas();
+    //     $tareas = $this->model->GetTareasOrderBy('fechatarea');
+
+    //     // En un planteamiento real puede que incluyesemos más cosas
+    //     return $this->blade->render('listar', ['tareas' => $tareas]);
+    // }
 
     /**
      * Muestra la lista de tareas
      */
     public function Listar()
     {
+
+        $tamano_paginas = 5;
+
+        if (isset($_GET['pagina'])) {
+            
+            if ($_GET['pagina'] == 1) {
+            
+                Session::redirect('/listar');
+            
+            } else {
+            
+                $pagina = $_GET['pagina'];
+            
+            }
+
+        }else{
+
+            $pagina = 1;
+
+        }
+
+        $empezar_desde = ($pagina - 1) * $tamano_paginas;
+
+        $num_filas = $this->model->GetTareas();
+
+        $num_filas = count($num_filas);
+
+        $total_paginas = ceil($num_filas/$tamano_paginas);
+
+        // $sql_limite = Db::getInstance()->orderByLimit('tareas', $order_value, $empezar_desde, $tamano_paginas);
+
+        // for ($i = 1; $i <= $total_paginas; $i++) {
+        //     echo '<a href="?pagina='. $i .'">'. $i .'</a>';
+        // }
+
         // $tareas = $this->model->GetTareas();
-        $tareas = $this->model->GetTareasOrderBy('fechatarea');
+
+        echo "Número de registros de la consulta: " . $num_filas . "<br>";
+        echo "Mostramos " . $tamano_paginas . "registros por página <br>";
+        echo "Mostrando " . $pagina . " de " . $total_paginas ."<br>";
+
+        $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion',$empezar_desde,$tamano_paginas);
 
         // En un planteamiento real puede que incluyesemos más cosas
-        return $this->blade->render('listar', ['tareas' => $tareas]);
+        // return $this->blade->render('listar', ['tareas' => $tareas]);
+        return $this->blade->render('listar', array(
+            'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
+            'tareas' => $tareas,
+            'pagactual' => $pagina,
+            'totalpags' => $total_paginas
+        ));
     }
 
     /**

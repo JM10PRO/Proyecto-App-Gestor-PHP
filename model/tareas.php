@@ -25,12 +25,9 @@ class Tareas_Model
      * Simulamos lectura de base de datos, aunque leemos de sessión
      * @return array
      */
-    public function GetTareasOrderBy($order_value)
+    public function GetTareasOrderByLimitePag($order_value,$empezar_desde,$tamano_paginas)
     {
-        $pdo = Db::getInstance()->pdo();
-
-        $rs = $pdo->query("SELECT * FROM tareas ORDER BY $order_value DESC");
-        return $rs->fetchAll();
+        return Db::getInstance()->orderByLimit('tareas', $order_value,$empezar_desde,$tamano_paginas);
     }
 
     /**

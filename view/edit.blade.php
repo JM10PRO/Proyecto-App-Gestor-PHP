@@ -117,9 +117,9 @@
                 <input type="text" name="operario" id="" value="{{$tarea['operario']}}"> <?= $errores->ErrorFormateado('operario'); ?>
             </p>
             <p>
-                <label for="fechatarea">Fecha de realización:</label>
-                <input type="date" name="fechatarea" id="" value="{{$tarea['fechatarea']}}">
-                <?= $errores->ErrorFormateado('fechatarea'); ?>
+                <label for="fecharealizacion">Fecha de realización:</label>
+                <input type="date" name="fecharealizacion" id="" value="{{$tarea['fecharealizacion']}}">
+                <?= $errores->ErrorFormateado('fecharealizacion'); ?>
             </p>
             <p>
                 <label for="anotacionanterior">Anotaciones anteriores:</label>

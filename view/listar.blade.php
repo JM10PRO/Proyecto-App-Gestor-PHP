@@ -9,7 +9,7 @@
 @extends('_template')
 
 @section('cuerpo')
-<h1>Listado de tareas</h1>
+<h1>{{$operacion}}</h1>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -31,7 +31,7 @@
             <td>{{$tarea['personacontacto']}}</td>
             <td>{{$tarea['estado']}}</td>
             <td>{{$tarea['operario']}}</td>
-            <td>{{$tarea['fechatarea']}}</td>
+            <td>{{$tarea['fecharealizacion']}}</td>
             <td>{{$tarea['descripcion']}}</td>
             <td>
                 <a class="btn btn-secondary" href="<?= BASE_URL ?>detalles?id={{$tarea['id']}}">Detalles</a>
@@ -42,4 +42,26 @@
         @endforeach
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-left">
+    <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+    Página actual {{$pagactual}}
+    
+        @for ($i = 1; $i <= $totalpags; $i++) 
+        <a href="?pagina={{$i}}">{{$i}}</a>
+        @endfor
+    
+
 @endsection

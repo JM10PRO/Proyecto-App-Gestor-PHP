@@ -43,21 +43,30 @@ a {
     text-decoration: none;
 }
 
-a:link {
+a.navbar-brand {
     color: #fff;
 }
-
-a:visited {
-    color: #fff;
+a.nav-link.active:hover {
+    color: #2b49c2;
 }
+a.nav-link.active.logout:hover {
+    color: rgb(175, 6, 6);
+}
+/* a:link {
+    color: #000;
+} */
 
-a:hover {
+/* a:visited {
+    color: #fff;
+} */
+
+/* a:hover {
     color: #f00;
 }
 
 a:active {
     color: #2b49c2;
-}
+} */
 
 h1 {
     font-size: 2rem;

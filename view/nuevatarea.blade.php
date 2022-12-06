@@ -89,8 +89,8 @@
         <input type="text" name="fechacreacion" id="" readonly value="<?= date("d-m-y"); ?>"> <br><br>
         <label for="operario">Operario encargado:</label>
         <input type="text" name="operario" id="" value="<?= (isset($_POST['operario'])) ? $_POST['operario'] : ""; ?>"> <?= $errores->ErrorFormateado('operario'); ?> <br><br>
-        <label for="fechatarea">Fecha de realización:</label>
-        <input type="date" name="fechatarea" id="" value="<?= (isset($_POST['fechatarea'])) ? $_POST['fechatarea'] : ""; ?>"> <?= $errores->ErrorFormateado('fechatarea'); ?> <br><br>
+        <label for="fecharealizacion">Fecha de realización:</label>
+        <input type="date" name="fecharealizacion" id="" value="<?= (isset($_POST['fecharealizacion'])) ? $_POST['fecharealizacion'] : ""; ?>"> <?= $errores->ErrorFormateado('fecharealizacion'); ?> <br><br>
         <label for="anotacionanterior">Anotaciones anteriores:</label>
         <input type="text" name="anotacionanterior" id="" value="<?= (isset($_POST['anotacionanterior'])) ? $_POST['anotacionanterior'] : ""; ?>"> <?= $errores->ErrorFormateado('anotacionanterior'); ?> <br><br>
         <label for="anotacionposterior">Anotaciones posteriores:</label>

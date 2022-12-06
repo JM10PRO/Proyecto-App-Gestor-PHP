@@ -181,7 +181,29 @@ class Db
 		//exit;*/
 		$pdo_stm = $this->pdo->prepare($sql);
 		$pdo_stm->execute();
-		return $pdo_stm->fetch(PDO::FETCH_ASSOC);
+		return $pdo_stm->fetchAll();
+	}
+
+	/**
+	 * Devuelve el registro de la tabla indicada cuyo valor es igual que el indicado en $search_value 
+	 * en el campo de la tabla $key_field
+	 *
+	 * @param string $tabla Nombre de la tabla
+	 * @param string $search_value Valor a buscar
+	 * @param string $key_field	Nombre campo de la tabla
+	 * @return array|null
+	 */
+	public function orderByLimit(string $tabla, string $order_value, int $empezar_desde, int $tamano_paginas): ?array
+	{
+		$sql = "SELECT * FROM $tabla ORDER BY $order_value DESC LIMIT $empezar_desde,$tamano_paginas";
+		/*
+		// Para depuración
+		echo "<pre>SQL: $sql \n Valores\n";
+		print_r($campos);
+		//exit;*/
+		$pdo_stm = $this->pdo->prepare($sql);
+		$pdo_stm->execute();
+		return $pdo_stm->fetchAll();
 	}
 
 }

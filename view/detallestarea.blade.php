@@ -9,7 +9,7 @@
 @extends('_template')
 
 @section('cuerpo')
-<h1>Listado de tareas</h1>
+<h1>Detalles de la tarea</h1>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -48,7 +48,7 @@
             <td>{{$tarea['estado']}}</td>
             <td>{{$tarea['fechacreacion']}}</td>
             <td>{{$tarea['operario']}}</td>
-            <td>{{$tarea['fechatarea']}}</td>
+            <td>{{$tarea['fecharealizacion']}}</td>
             <td>{{$tarea['anotacionanterior']}}</td>
             <td>{{$tarea['anotacionposterior']}}</td>
             <td>{{$tarea['descripcion']}}</td>
