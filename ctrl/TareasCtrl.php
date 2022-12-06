@@ -128,10 +128,33 @@ class TareasCtrl
      */
     public function Listar()
     {
-        $tareas = $this->model->GetTareas();
+        // $tareas = $this->model->GetTareas();
+        $tareas = $this->model->GetTareasOrderBy('fechatarea');
 
         // En un planteamiento real puede que incluyesemos más cosas
         return $this->blade->render('listar', ['tareas' => $tareas]);
+    }
+
+    /**
+     * Muestra la lista de tareas
+     */
+    public function DetallesTarea()
+    {
+        if (!isset($_GET['id'])) {
+            // No existe la tarea, error
+            return $this->blade->render('edit_error', [
+                'descripcion_error' => 'No existe la tarea seleccionada'
+            ]);
+        }
+
+        // Han indicado el id
+        $id = $_GET['id'];
+
+        // $tareas = $this->model->GetTareas();
+        $tarea = $this->model->GetTarea($id);
+
+        // En un planteamiento real puede que incluyesemos más cosas
+        return $this->blade->render('detallestarea', ['tarea' => $tarea]);
     }
 
     /**
@@ -263,9 +286,8 @@ class TareasCtrl
         $tarea = $this->model->GetTarea($id);
 
         // En un controlador real esto haría más cosas
-        return $this->blade->render('confirmardelete',['tarea'=>$tarea]);
+        return $this->blade->render('confirmardelete', ['tarea' => $tarea]);
     }
-
 
     /**
      * Borra una nueva tarea
@@ -293,11 +315,6 @@ class TareasCtrl
         }
     }
 
-
-
-
-
-
     /**
      * Realiza el filtrado de campos y almacena los errores en el gestor de errores
      * @param GestorErrores $this->errores
@@ -306,26 +323,21 @@ class TareasCtrl
     {
         // Filtramos el nif
         if (VPost('nif') == '') {
-            $this->errores->AnotaError('nif', 'Se debe introducir texto');
+            $this->errores->AnotaError('nif', 'El campo NIF es obligatorio');
         } elseif (strlen(VPost('nif')) < 9 || strlen(VPost('nif')) > 9) {
             $this->errores->AnotaError('nif', 'El NIF debe tener 8 dígitos y una letra');
         } elseif (!validarNie(VPost('nif'))) {
             $this->errores->AnotaError('nif', 'El NIF no es correcto');
         }
 
-        // Filtramos el nombre
-        if (VPost('nombre') == '') {
-            $this->errores->AnotaError('nombre', 'Se debe introducir texto');
-        }
-
-        // Filtramos los apellidos
-        if (VPost('apellidos') == '') {
-            $this->errores->AnotaError('apellidos', 'Se debe introducir texto');
+        // Filtramos el nombre de la persona de contacto
+        if (VPost('personacontacto') == '') {
+            $this->errores->AnotaError('personacontacto', 'Se debe introducir el nombre');
         }
 
         // Filtramos el telefono
         if (VPost('telefono') == '') {
-            $this->errores->AnotaError('telefono', 'Se debe introducir texto');
+            $this->errores->AnotaError('telefono', 'Se debe introducir un teléfono');
         } elseif (!is_string($_POST['telefono'])) {
             $this->errores->AnotaError('telefono', "Compruebe el número de teléfono");
         } elseif (strlen(VPost('telefono')) < 9) {
@@ -334,24 +346,24 @@ class TareasCtrl
 
         // Filtramos el correo
         if (VPost('correo') == '') {
-            $this->errores->AnotaError('correo', 'Se debe introducir texto');
+            $this->errores->AnotaError('correo', 'El correo es obligatorio');
         } elseif (filter_input(INPUT_POST, 'correo', FILTER_VALIDATE_EMAIL) == '') {
-            $this->errores->AnotaError('correo', "El correo no válido");
+            $this->errores->AnotaError('correo', "El correo no es válido");
         }
 
         // Filtramos la población
         if (VPost('poblacion') == '') {
-            $this->errores->AnotaError('poblacion', 'Se debe introducir texto');
+            $this->errores->AnotaError('poblacion', 'Debe indicar la población');
         }
 
         // Filtramos el código postal
         if (VPost('codpostal') == '') {
-            $this->errores->AnotaError('codpostal', 'Se debe introducir texto');
+            $this->errores->AnotaError('codpostal', 'Se debe introducir el código postal');
         }
 
         // Filtramos la provincia
         if (VPost('provincia') == '') {
-            $this->errores->AnotaError('provincia', 'Se debe introducir texto');
+            $this->errores->AnotaError('provincia', 'Se debe indicar la provincia');
         }
 
         // Filtramos la dirección
@@ -374,38 +386,15 @@ class TareasCtrl
 
         // Filtramos el operario
         if (VPost('operario') == '') {
-            $this->errores->AnotaError('operario', 'Se debe introducir texto');
+            $this->errores->AnotaError('operario', 'Se debe indicar el operario');
         } elseif (is_numeric(VPost('operario'))) {
             $this->errores->AnotaError('operario', "Por favor, introduce un nombre sin números ni carácteres especiales");
+        } elseif (strlen(VPost('operario')) < 3) {
+            $this->errores->AnotaError('operario', "Por favor, introduce el nombre");
         }
 
         if (VPost('fechatarea') == '') {
             $this->errores->AnotaError('fechatarea', 'Se debe introducir una fecha');
         }
-
-        // // Filtramos la prioridad
-        // $prioridad = VPost('prioridad');
-        // if ($prioridad == '') {
-        //     $this->errores->AnotaError('prioridad', 'Se debe introducir texto');
-        // } elseif (!is_numeric($prioridad) || ($prioridad < 1 || $prioridad > 5)) {
-        //     $this->errores->AnotaError('prioridad', 'La prioridad debe ser un número entre 1 y 5');
-        // }
     }
-    // public function FiltraCamposPost()
-    // {
-    //     // Filtramos el nombre
-    //     if (VPost('nombre') == '') {
-    //         $this->errores->AnotaError('nombre', 'Se debe introducir texto');
-    //     } elseif (strlen(VPost('nombre')) < 5) {
-    //         $this->errores->AnotaError('nombre', 'El nombre debe tener al menos 5 letras');
-    //     }
-
-    //     // Filtramos la prioridad
-    //     $prioridad = VPost('prioridad');
-    //     if ($prioridad == '') {
-    //         $this->errores->AnotaError('prioridad', 'Se debe introducir texto');
-    //     } elseif (!is_numeric($prioridad) || ($prioridad < 1 || $prioridad > 5)) {
-    //         $this->errores->AnotaError('prioridad', 'La prioridad debe ser un número entre 1 y 5');
-    //     }
-    // }
 }

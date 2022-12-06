@@ -8,10 +8,8 @@
         <legend>Datos persona de contacto:</legend>
         <label for="nif">NIF / CIF:</label>
         <input type="text" name="nif" value="<?= (isset($_POST['nif'])) ? $_POST['nif'] : ""; ?>"> <?= $errores->ErrorFormateado('nif'); ?> <br><br>
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" value="<?= (isset($_POST['nombre'])) ? $_POST['nombre'] : ""; ?>"> <?= $errores->ErrorFormateado('nombre'); ?> <br><br>
-        <label for="apellidos">Apellidos:</label>
-        <input type="text" name="apellidos" value="<?= (isset($_POST['apellidos'])) ? $_POST['apellidos'] : ""; ?>"> <?= $errores->ErrorFormateado('apellidos'); ?> <br><br>
+        <label for="personacontacto">Persona de contacto:</label>
+        <input type="text" name="personacontacto" value="<?= (isset($_POST['personacontacto'])) ? $_POST['personacontacto'] : ""; ?>"> <?= $errores->ErrorFormateado('personacontacto'); ?> <br><br>
         <label for="telefono">Teléfono:</label>
         <input type="number" name="telefono" value="<?= (isset($_POST['telefono'])) ? $_POST['telefono'] : ""; ?>"> <?= $errores->ErrorFormateado('telefono'); ?> <br><br>
         <label for="correo">Correo electrónico:</label>

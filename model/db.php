@@ -161,4 +161,27 @@ class Db
 	}
 
 	// Aquí irian otras funciones útiles para trabajar con la base de datos
+
+	/**
+	 * Devuelve el registro de la tabla indicada cuyo valor es igual que el indicado en $search_value 
+	 * en el campo de la tabla $key_field
+	 *
+	 * @param string $tabla Nombre de la tabla
+	 * @param string $search_value Valor a buscar
+	 * @param string $key_field	Nombre campo de la tabla
+	 * @return array|null
+	 */
+	public function orderBy(string $tabla, string $search_value): ?array
+	{
+		$sql = "SELECT * FROM $tabla ORDER BY $search_value DESC";
+		/*
+		// Para depuración
+		echo "<pre>SQL: $sql \n Valores\n";
+		print_r($campos);
+		//exit;*/
+		$pdo_stm = $this->pdo->prepare($sql);
+		$pdo_stm->execute();
+		return $pdo_stm->fetch(PDO::FETCH_ASSOC);
+	}
+
 }

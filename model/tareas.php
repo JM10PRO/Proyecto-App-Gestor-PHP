@@ -20,7 +20,18 @@ class Tareas_Model
         return $rs->fetchAll();
     }
 
+    /**
+     * Devuelve las tareas existentes.
+     * Simulamos lectura de base de datos, aunque leemos de sessión
+     * @return array
+     */
+    public function GetTareasOrderBy($order_value)
+    {
+        $pdo = Db::getInstance()->pdo();
 
+        $rs = $pdo->query("SELECT * FROM tareas ORDER BY $order_value DESC");
+        return $rs->fetchAll();
+    }
 
     /**
      * Devuelve los datos de una tarea

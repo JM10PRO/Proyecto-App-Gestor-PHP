@@ -12,12 +12,8 @@
                 <input type="text" name="nif" value="{{$tarea['nif']}}"> <?= $errores->ErrorFormateado('nif'); ?>
             </p>
             <p>
-                <label for="nombre">Nombre:</label>
-                <input type="text" name="nombre" value="{{$tarea['nombre']}}"> <?= $errores->ErrorFormateado('nombre'); ?>
-            </p>
-            <p>
-                <label for="apellidos">Apellidos:</label>
-                <input type="text" name="apellidos" value="{{$tarea['apellidos']}}"> <?= $errores->ErrorFormateado('apellidos'); ?>
+                <label for="peronacontacto">Persona de contacto:</label>
+                <input type="text" name="nombre" value="{{$tarea['personacontacto']}}"> <?= $errores->ErrorFormateado('personacontacto'); ?>
             </p>
             <p>
                 <label for="telefono">Teléfono:</label>

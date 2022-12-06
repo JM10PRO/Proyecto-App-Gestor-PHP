@@ -72,6 +72,12 @@ $app->get('/listar', function (Request $request, Response $response, $args) {
     return (new TareasCtrl())->Listar();
 });
 
+// Ver detalles de la tarea
+$app->get('/detalles', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyLogged();
+    return (new TareasCtrl())->DetallesTarea();
+});
+
 // Nueva tarea
 $app->any('/nuevatarea', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyLogged();
