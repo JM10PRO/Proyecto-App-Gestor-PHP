@@ -44,24 +44,31 @@
 </table>
 
 <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-left">
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</nav>
-
-    Página actual {{$pagactual}}
-    
+    <ul class="pagination justify-content-left">
+        <!-- Ir a la página anterior -->
+        @if($pagactual == 1)
+            <li class="page-item disabled">
+                <a class="page-link" href="?pagina={{$pagactual-1}}"> << </a>
+            </li>
+        @else
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{$pagactual-1}}"> << </a>
+            </li>        
+        @endif
+        <!-- Páginas disponibles -->
         @for ($i = 1; $i <= $totalpags; $i++) 
-        <a href="?pagina={{$i}}">{{$i}}</a>
+            <li class="page-item"><a class="page-link" href="?pagina={{$i}}">{{$i}}</a></li>
         @endfor
-    
-
+        <!-- Ir a la página siguiente -->
+        @if($pagactual == $totalpags)
+            <li class="page-item disabled">
+                <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
+            </li>
+        @else
+            <li class="page-item">
+                <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
+            </li>      
+        @endif
+    </ul>
+</nav>
 @endsection
