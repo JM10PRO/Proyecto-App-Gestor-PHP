@@ -169,22 +169,8 @@ class TareasCtrl
 
         $total_paginas = ceil($num_filas/$tamano_paginas);
 
-        // $sql_limite = Db::getInstance()->orderByLimit('tareas', $order_value, $empezar_desde, $tamano_paginas);
-
-        // for ($i = 1; $i <= $total_paginas; $i++) {
-        //     echo '<a href="?pagina='. $i .'">'. $i .'</a>';
-        // }
-
-        // $tareas = $this->model->GetTareas();
-
-        echo "Número de registros de la consulta: " . $num_filas . "<br>";
-        echo "Mostramos " . $tamano_paginas . "registros por página <br>";
-        echo "Mostrando " . $pagina . " de " . $total_paginas ."<br>";
-
         $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion',$empezar_desde,$tamano_paginas);
 
-        // En un planteamiento real puede que incluyesemos más cosas
-        // return $this->blade->render('listar', ['tareas' => $tareas]);
         return $this->blade->render('listar', array(
             'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
             'tareas' => $tareas,
@@ -208,10 +194,8 @@ class TareasCtrl
         // Han indicado el id
         $id = $_GET['id'];
 
-        // $tareas = $this->model->GetTareas();
         $tarea = $this->model->GetTarea($id);
 
-        // En un planteamiento real puede que incluyesemos más cosas
         return $this->blade->render('detallestarea', ['tarea' => $tarea]);
     }
 
@@ -343,7 +327,6 @@ class TareasCtrl
 
         $tarea = $this->model->GetTarea($id);
 
-        // En un controlador real esto haría más cosas
         return $this->blade->render('confirmardelete', ['tarea' => $tarea]);
     }
 
