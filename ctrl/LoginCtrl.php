@@ -49,7 +49,13 @@ class LoginCtrl
                 filter_input(INPUT_POST, 'passwd')
             )) {
                 // Ha entrado, redirigimos a la página de listar tareas
-                Session::redirect('/listar');
+                // var_dump(Session::getInstance()->onlyLogged());
+                // exit;
+                if(Session::getInstance()->isAdmin()){
+                    Session::redirect('/listar');
+                }else{
+                    Session::redirect('/');
+                }
                 // Aquí no se llega, redirect ha finalizao el script
             }
             // Login fallido, hay error

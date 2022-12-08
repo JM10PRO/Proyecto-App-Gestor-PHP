@@ -11,6 +11,7 @@ class Session
 {
     const SESS_DATA = 'sess_data';
     const IDX_ESTA_DENTRO = 'idx_dentro';
+    const USER_ROL = 'user_rol';
     const URL_LOGIN = 'login';
 
     // Más ctes o atributos como tipo de usuario, nombre, etc
@@ -56,16 +57,22 @@ class Session
         // guardando en la sessión ($_SESSION) sus datos o el 'id' del mismo si luego lo vamos a consultar
         $credenciales = $this->getUserData($user, $passwd);
 
-        if ($credenciales) {
+        if ($credenciales != null) {
             // Usuario y clave correctos
              $_SESSION[self::IDX_ESTA_DENTRO] = true;
              $_SESSION['usuario_conectado'] = $user;
-             $_SESSION['rol'] = $credenciales[3];
+             $_SESSION['rol'] = $credenciales[0][3];
+             if($_SESSION['rol'] == 'admin'){
+                $_SESSION[self::USER_ROL] = 'admin';
+             }else{
+                $_SESSION[self::USER_ROL] = 'operario';
+             }
              return true;
-        }else{
-            self::redirect(self::URL_LOGIN);
         }
-        
+        // else{
+        //     self::redirect(self::URL_LOGIN);
+        // }
+
         return false;
     }
 
@@ -78,6 +85,8 @@ class Session
     {
         // Registra que ha salido
         $_SESSION[self::IDX_ESTA_DENTRO] = false;
+        session_unset();
+        session_destroy();
     }
 
     /**
@@ -91,6 +100,16 @@ class Session
     }
 
     /**
+     * Indica si un usuario es admin
+     *
+     * @return boolean
+     */
+    public function isAdmin(): bool
+    {
+        return $_SESSION[self::USER_ROL] == 'admin';
+    }
+
+    /**
      * Comprueba si el usuario está logeado y si no está redirige a la página de login y finaliza
      * el script
      *
@@ -99,6 +118,18 @@ class Session
     public function onlyLogged(): void
     {
         if (!$this->isLogged())
+            self::redirect(self::URL_LOGIN);
+    }
+
+    /**
+     * Comprueba si el usuario es admin y está logeado y si no está redirige a la página de login y finaliza
+     * el script
+     *
+     * @return void
+     */
+    public function onlyAdminLogged(): void
+    {
+        if (!$this->isLogged() || !$this->isAdmin())
             self::redirect(self::URL_LOGIN);
     }
 

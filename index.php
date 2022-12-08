@@ -66,37 +66,37 @@ $app->get('/', function (Request $request, Response $response, $args) {
     return (new TareasCtrl())->Inicio();
 });
 
-// Listar
+// Listar admin
 $app->get('/listar', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
+    Session::getInstance()->onlyAdminLogged();
     return (new TareasCtrl())->Listar();
 });
 
-// Ver detalles de la tarea
-$app->get('/detalles', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
-    return (new TareasCtrl())->DetallesTarea();
+// Nueva tarea admin
+$app->any('/nuevatarea', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->NuevaTarea();
 });
 
-// Nueva tarea
-$app->any('/nuevatarea', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
-    return (new TareasCtrl())->NuevaTarea();
+// Ver detalles de la tarea admin
+$app->get('/detalles', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->DetallesTarea();
 });
 
 // Alta
 // Observad que aquí no se pone 'get' pues la petición puede llegar por GET o por POST
-$app->post('/add', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
-    return (new TareasCtrl())->Add();
-});
+// $app->post('/add', function (Request $request, Response $response, $args) {
+//     Session::getInstance()->onlyLogged();
+//     return (new TareasCtrl())->Add();
+// });
 
 // Alta
 // Repetimos ruta con GET. Lo más sencillo hubiese sido poner $app->any(...)
-$app->get('/add', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
-    return (new TareasCtrl())->Add();
-});
+// $app->get('/add', function (Request $request, Response $response, $args) {
+//     Session::getInstance()->onlyLogged();
+//     return (new TareasCtrl())->Add();
+// });
 
 // Modificar
 $app->any('/edit', function (Request $request, Response $response, $args) {
