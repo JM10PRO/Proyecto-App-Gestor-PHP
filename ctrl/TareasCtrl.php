@@ -194,7 +194,18 @@ class TareasCtrl
 
         $tarea = $this->model->GetTarea($id);
 
-        return $this->blade->render('detallestarea', ['tarea' => $tarea]);
+        if (isset($_GET['pagina'])) {
+            
+            $pagina = $_GET['pagina'];
+
+        }else{
+            $pagina = 1;
+        }
+
+        return $this->blade->render('detallestarea', array(
+            'tarea' => $tarea,
+            'pagina' => $pagina
+        ));
     }
 
     /**
@@ -269,7 +280,7 @@ class TareasCtrl
                 // Guardamos la tarea
                 $this->model->Update($id, $tarea);
                 return $this->blade->render('msg', [
-                    'descripcion' => "<p>Se ha guardado la tarea ....</p>"
+                    'descripcion' => "Se ha guardado la tarea"
                 ]);
             }
         }

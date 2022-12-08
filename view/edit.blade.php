@@ -132,7 +132,7 @@
                 <?= $errores->ErrorFormateado('anotacionposterior'); ?>
             </p>
             <p>
-                <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añada una descripción de la tarea..." value="{{$tarea['descripcion']}}"></textarea> 
+                <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añada una descripción de la tarea...">{{$tarea['descripcion']}}</textarea> 
                 <?= $errores->ErrorFormateado('descripcion'); ?>
             </p>
             <p>

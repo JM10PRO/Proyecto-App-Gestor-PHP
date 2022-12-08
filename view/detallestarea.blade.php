@@ -64,5 +64,5 @@
     </table>
 </div>
 <br>
-<a class="btn btn-secondary" href="<?= BASE_URL ?>listar">Volver al listado</a>
+<a class="btn btn-secondary" href="<?= BASE_URL ?>listar?pagina={{$pagina}}">Volver al listado</a>
 @endsection
