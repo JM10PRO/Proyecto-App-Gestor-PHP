@@ -194,6 +194,7 @@ class TareasCtrl
 
         $tarea = $this->model->GetTarea($id);
 
+        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
         if (isset($_GET['pagina'])) {
             
             $pagina = $_GET['pagina'];
@@ -386,9 +387,9 @@ class TareasCtrl
 
         // Filtramos el telefono
         if (VPost('telefono') == '') {
-            $this->errores->AnotaError('telefono', 'Se debe introducir un teléfono');
+            $this->errores->AnotaError('telefono', 'Se debe introducir un teléfono (intrduzca todos los números juntos)');
         } elseif (!is_string($_POST['telefono'])) {
-            $this->errores->AnotaError('telefono', "Compruebe el número de teléfono");
+            $this->errores->AnotaError('telefono', "Compruebe el número de teléfono (intrduzca todos los números juntos)");
         } elseif (strlen(VPost('telefono')) < 9) {
             $this->errores->AnotaError('telefono', 'El teléfono debe tener 9 digitos');
         }
@@ -408,6 +409,8 @@ class TareasCtrl
         // Filtramos el código postal
         if (VPost('codpostal') == '') {
             $this->errores->AnotaError('codpostal', 'Se debe introducir el código postal');
+        }elseif (strlen(VPost('codpostal')) != 5) {
+            $this->errores->AnotaError('codpostal', 'El código postal debe tener 5 números');
         }
 
         // Filtramos la provincia
@@ -428,7 +431,7 @@ class TareasCtrl
         }
 
         // Filtramos y definimos la fecha de creación de la tarea
-        $_POST['fechacreacion'] = date("d-m-y");
+        $_POST['fechacreacion'] = date("d-m-Y");
         if (VPost('fechacreacion') == '') {
             $this->errores->AnotaError('fechacreacion', 'Se debe introducir una fecha');
         }
@@ -442,8 +445,22 @@ class TareasCtrl
             $this->errores->AnotaError('operario', "Por favor, introduce el nombre");
         }
 
-        if (VPost('fechacreacion') == '') {
-            $this->errores->AnotaError('fechacreacion', 'Se debe introducir una fecha');
+        function validar_fecha_espanol($fecha){
+            $valores = explode('-', $fecha);
+            if(count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])){
+                return true;
+            }
+            return false;
+        }
+
+        $validarFechaRealizacion = validar_fecha_espanol(VPost('fecharealizacion'));
+
+        if (VPost('fecharealizacion') == '') {
+            $this->errores->AnotaError('fecharealizacion', 'Se debe introducir una fecha');
+        }elseif(!$validarFechaRealizacion){
+            $this->errores->AnotaError('fecharealizacion', 'Introduzca una fecha válida');
+        }elseif (VPost('fecharealizacion') < date("Y-m-d")){
+            $this->errores->AnotaError('fecharealizacion', 'La fecha de realizacíon debe ser posterior a hoy');
         }
     }
 }

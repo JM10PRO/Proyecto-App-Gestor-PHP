@@ -75,3 +75,7 @@ h1 {
 #cuerpo {
     padding: 1rem;
 }
+
+span#obligatorio {
+    color: #f00;
+}

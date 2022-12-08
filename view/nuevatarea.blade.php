@@ -6,19 +6,19 @@
 <form method="post">
     <fieldset>
         <legend>Datos persona de contacto:</legend>
-        <label for="nif">NIF / CIF:</label>
+        <label for="nif">NIF / CIF: <span id="obligatorio">*</span></label>
         <input type="text" name="nif" value="<?= (isset($_POST['nif'])) ? $_POST['nif'] : ""; ?>"> <?= $errores->ErrorFormateado('nif'); ?> <br><br>
-        <label for="personacontacto">Persona de contacto:</label>
+        <label for="personacontacto">Persona de contacto: <span id="obligatorio">*</span></label>
         <input type="text" name="personacontacto" value="<?= (isset($_POST['personacontacto'])) ? $_POST['personacontacto'] : ""; ?>"> <?= $errores->ErrorFormateado('personacontacto'); ?> <br><br>
-        <label for="telefono">Teléfono:</label>
+        <label for="telefono">Teléfono: <span id="obligatorio">*</span></label>
         <input type="number" name="telefono" value="<?= (isset($_POST['telefono'])) ? $_POST['telefono'] : ""; ?>"> <?= $errores->ErrorFormateado('telefono'); ?> <br><br>
-        <label for="correo">Correo electrónico:</label>
+        <label for="correo">Correo electrónico: <span id="obligatorio">*</span></label>
         <input type="text" name="correo" value="<?= (isset($_POST['correo'])) ? $_POST['correo'] : ""; ?>"> <?= $errores->ErrorFormateado('correo'); ?> <br><br>
         <label for="poblacion">Población:</label>
         <input type="text" name="poblacion" value="<?= (isset($_POST['poblacion'])) ? $_POST['poblacion'] : ""; ?>"> <?= $errores->ErrorFormateado('poblacion'); ?> <br><br>
-        <label for="codpostal">Código postal:</label>
-        <input type="text" name="codpostal" value="<?= (isset($_POST['codpostal'])) ? $_POST['codpostal'] : ""; ?>"> <?= $errores->ErrorFormateado('poblacion'); ?> <br><br>
-        <label for="provincia">Provincia:</label>
+        <label for="codpostal">Código postal: <span id="obligatorio">*</span></label>
+        <input type="text" name="codpostal" value="<?= (isset($_POST['codpostal'])) ? $_POST['codpostal'] : ""; ?>"> <?= $errores->ErrorFormateado('codpostal'); ?> <br><br>
+        <label for="provincia">Provincia: <span id="obligatorio">*</span></label>
         <select name="provincia" id="">
             <option codigo="" value="">Seleccionar provincia</option>
             <option codigo="02" value="Albacete">Albacete</option>
@@ -89,12 +89,13 @@
         <input type="text" name="fechacreacion" id="" readonly value="<?= date("d-m-y"); ?>"> <br><br>
         <label for="operario">Operario encargado:</label>
         <input type="text" name="operario" id="" value="<?= (isset($_POST['operario'])) ? $_POST['operario'] : ""; ?>"> <?= $errores->ErrorFormateado('operario'); ?> <br><br>
-        <label for="fecharealizacion">Fecha de realización:</label>
+        <label for="fecharealizacion">Fecha de realización: <span id="obligatorio">*</span></label>
         <input type="date" name="fecharealizacion" id="" value="<?= (isset($_POST['fecharealizacion'])) ? $_POST['fecharealizacion'] : ""; ?>"> <?= $errores->ErrorFormateado('fecharealizacion'); ?> <br><br>
         <label for="anotacionanterior">Anotaciones anteriores:</label>
         <input type="text" name="anotacionanterior" id="" value="<?= (isset($_POST['anotacionanterior'])) ? $_POST['anotacionanterior'] : ""; ?>"> <?= $errores->ErrorFormateado('anotacionanterior'); ?> <br><br>
         <label for="anotacionposterior">Anotaciones posteriores:</label>
         <input type="text" name="anotacionposterior" id="" value="<?= (isset($_POST['anotacionposterior'])) ? $_POST['anotacionposterior'] : ""; ?>"> <?= $errores->ErrorFormateado('anotacionposterior'); ?> <br><br>
+        <label for="descripcion">Descripción de la tarea: <span id="obligatorio">*</span></label> <br>
         <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añada una descripción de la tarea..." value="<?= (isset($_POST['descripcion'])) ? $_POST['descripcion'] : ""; ?>"></textarea> <?= $errores->ErrorFormateado('descripcion'); ?> <br><br>
         <label for="ficheroresumen">Fichero resumen de tareas realizadas:</label>
         <input type="file" name="ficheroresumen" id=""> <br><br>
