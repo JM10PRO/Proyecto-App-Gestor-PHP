@@ -1,6 +1,6 @@
 <?php
 // Evitamos errores "deprecated" en php 8.1 que tenemos con la versión de jessengers blade
-// error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 /* 
  * CONTROLADOR FRONTAL utilizando slim (Véase ejemplos anteriores para explicaciónes sobre como instalar
  */

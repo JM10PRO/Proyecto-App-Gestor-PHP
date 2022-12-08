@@ -62,8 +62,7 @@ class TareasCtrl
             // Primera vez.
             $tarea = array(
                 'nif' =>  '',
-                'nombre' => '',
-                'apellidos' => '',
+                'personacontacto' => '',
                 'telefono' => '',
                 'correo' => '',
                 'poblacion' => '',
@@ -73,7 +72,7 @@ class TareasCtrl
                 'estado' => '',
                 'fechacreacion' => '',
                 'operario' => '',
-                'fechatarea' => '',
+                'fecharealizacion' => '',
                 'anotacionanterior' => '',
                 'anotacionposterior' => '',
                 'descripcion' => '',
@@ -85,11 +84,10 @@ class TareasCtrl
             $this->FiltraCamposPost();
 
             // Creamos el objeto tarea que es el que se utiliza en el formulario
-            // Lo creamos a partir de los datos recibidos del POST
+            //- Lo creamos a partir de los datos recibidos del POST
             $tarea = array(
                 'nif' =>  VPost('nif'),
-                'nombre' => VPost('nombre'),
-                'apellidos' => VPost('apellidos'),
+                'personacontacto' => VPost('personacontacto'),
                 'telefono' => VPost('telefono'),
                 'correo' => VPost('correo'),
                 'poblacion' => VPost('poblacion'),
@@ -99,7 +97,7 @@ class TareasCtrl
                 'estado' => VPost('estado'),
                 'fechacreacion' => VPost('fechacreacion'),
                 'operario' => VPost('operario'),
-                'fechatarea' => VPost('fechatarea'),
+                'fechacreacion' => VPost('fechacreacion'),
                 'anotacionanterior' => VPost('anotacionanterior'),
                 'anotacionposterior' => VPost('anotacionposterior'),
                 'descripcion' => VPost('descripcion'),
@@ -129,7 +127,7 @@ class TareasCtrl
     // public function Listar()
     // {
     //     // $tareas = $this->model->GetTareas();
-    //     $tareas = $this->model->GetTareasOrderBy('fechatarea');
+    //     $tareas = $this->model->GetTareasOrderBy('fechacreacion');
 
     //     // En un planteamiento real puede que incluyesemos más cosas
     //     return $this->blade->render('listar', ['tareas' => $tareas]);
@@ -242,8 +240,7 @@ class TareasCtrl
             // Lo creamos a partir de los datos recibidos del POST
             $tarea = array(
                 'nif' =>  VPost('nif'),
-                'nombre' => VPost('nombre'),
-                'apellidos' => VPost('apellidos'),
+                'personacontacto' => VPost('personacontacto'),
                 'telefono' => VPost('telefono'),
                 'correo' => VPost('correo'),
                 'poblacion' => VPost('poblacion'),
@@ -253,7 +250,7 @@ class TareasCtrl
                 'estado' => VPost('estado'),
                 'fechacreacion' => VPost('fechacreacion'),
                 'operario' => VPost('operario'),
-                'fechatarea' => VPost('fechatarea'),
+                'fechacreacion' => VPost('fechacreacion'),
                 'anotacionanterior' => VPost('anotacionanterior'),
                 'anotacionposterior' => VPost('anotacionposterior'),
                 'descripcion' => VPost('descripcion'),
@@ -434,8 +431,8 @@ class TareasCtrl
             $this->errores->AnotaError('operario', "Por favor, introduce el nombre");
         }
 
-        if (VPost('fechatarea') == '') {
-            $this->errores->AnotaError('fechatarea', 'Se debe introducir una fecha');
+        if (VPost('fechacreacion') == '') {
+            $this->errores->AnotaError('fechacreacion', 'Se debe introducir una fecha');
         }
     }
 }
