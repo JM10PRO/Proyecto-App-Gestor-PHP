@@ -13,9 +13,6 @@ class Session
     const IDX_ESTA_DENTRO = 'idx_dentro';
     const URL_LOGIN = 'login';
 
-    const USUARIO = 'pepe';
-    const CLAVE = '1234';
-
     // Más ctes o atributos como tipo de usuario, nombre, etc
 
     static private $_instance = null;
@@ -41,6 +38,11 @@ class Session
         return self::$_instance;
     }
 
+    public static function getUserData($u, $p)
+    {
+        return DB::getInstance()->getUserCredentials($u, $p);
+    }
+
     /**
      * Undocumented function
      *
@@ -52,11 +54,18 @@ class Session
     {
         // Si hubiese más de un usuario, consultariamos al modelo de la base de datos
         // guardando en la sessión ($_SESSION) sus datos o el 'id' del mismo si luego lo vamos a consultar
-        if (self::USUARIO == $user  && self::CLAVE == $passwd) {
+        $credenciales = $this->getUserData($user, $passwd);
+
+        if ($credenciales) {
             // Usuario y clave correctos
-            $_SESSION[self::IDX_ESTA_DENTRO] = true;
-            return true;
+             $_SESSION[self::IDX_ESTA_DENTRO] = true;
+             $_SESSION['usuario_conectado'] = $user;
+             $_SESSION['rol'] = $credenciales[3];
+             return true;
+        }else{
+            self::redirect(self::URL_LOGIN);
         }
+        
         return false;
     }
 

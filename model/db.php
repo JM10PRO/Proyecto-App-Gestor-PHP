@@ -206,4 +206,14 @@ class Db
 		return $pdo_stm->fetchAll();
 	}
 
+	public function getUserCredentials(string $user, string $pass, string $db_user = 'usuario', string $db_pass = 'password'): ?array
+	{
+		$sql = "SELECT * FROM usuarios WHERE $db_user=:usuario AND $db_pass=:passwd LIMIT 1";
+		$campos = ['usuario' => $user, 'passwd'=>$pass];
+
+		$pdo_stm = $this->pdo->prepare($sql);
+		$pdo_stm->execute($campos);
+		return $pdo_stm->fetchAll();
+	}
+
 }
