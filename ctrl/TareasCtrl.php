@@ -226,6 +226,15 @@ class TareasCtrl
         // Han indicado el id
         $id = $_GET['id'];
 
+        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
+        if (isset($_GET['pagina'])) {
+            
+            $pagina = $_GET['pagina'];
+
+        }else{
+            $pagina = 1;
+        }
+
 
         if (!$_POST) {
             // Primera vez.
@@ -241,6 +250,7 @@ class TareasCtrl
                 return $this->blade->render('edit', [
                     'operacion' => 'Edición',
                     'tarea' => $tarea,
+                    'pagina' => $pagina,
                     'errores' => $this->errores
                 ]);
             }
@@ -275,53 +285,18 @@ class TareasCtrl
                 return $this->blade->render('edit', array(
                     'operacion' => 'Edición',
                     'tarea' => $tarea,
+                    'pagina' => $pagina,
                     'errores' => $this->errores
                 ));
             } else {
                 // Guardamos la tarea
                 $this->model->Update($id, $tarea);
-                return $this->blade->render('msg', [
-                    'descripcion' => "Se ha guardado la tarea"
-                ]);
+                return $this->blade->render('msg', array(
+                    'descripcion' => "Se ha guardado la tarea",
+                    'pagina' => $pagina
+                ));
             }
         }
-    }
-
-    /**
-     * Añade una nueva tarea
-     * @return type
-     */
-    public function Add()
-    {
-        if (!$_POST) {
-            // Primera vez.
-            $tarea = array(
-                'nombre' =>  '',
-                'prioridad' => ''
-            );
-        } else {
-            // Filtrar datos
-            $this->FiltraCamposPost();
-
-            // Creamos el objeto tarea que es el que se utiliza en el formulario
-            // Lo creamos a partir de los datos recibidos del POST
-            $tarea = array(
-                'nombre' =>  VPost('nombre'),
-                'prioridad' => VPost('prioridad')
-            );
-
-            if (!$this->errores->HayErrores()) {
-                // Guardamos la tarea y finalizamos
-                $this->model->Add($tarea);
-                Session::redirect('/listar');
-            }
-        }
-        // Mostramos los datos
-        return $this->blade->render('edit', array(
-            'operacion' => 'Insertar',
-            'tarea' => $tarea,
-            'errores' => $this->errores
-        ));
     }
 
     /**
@@ -336,7 +311,19 @@ class TareasCtrl
 
         $tarea = $this->model->GetTarea($id);
 
-        return $this->blade->render('confirmardelete', ['tarea' => $tarea]);
+        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
+        if (isset($_GET['pagina'])) {
+            
+            $pagina = $_GET['pagina'];
+
+        }else{
+            $pagina = 1;
+        }
+        
+        return $this->blade->render('confirmardelete', array(
+            'tarea' => $tarea,
+            'pagina' => $pagina
+        ));
     }
 
     /**

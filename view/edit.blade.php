@@ -147,4 +147,5 @@
         <button type="submit">Enviar</button> <br><br>
     </form>
 </div>
+<a class="btn btn-secondary" href="<?= BASE_URL ?>listar?pagina={{$pagina}}">Volver al listado</a>
 @endsection
