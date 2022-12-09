@@ -11,7 +11,7 @@
         <label for="personacontacto">Persona de contacto: <span id="obligatorio">*</span></label>
         <input type="text" name="personacontacto" value="<?= (isset($_POST['personacontacto'])) ? $_POST['personacontacto'] : ""; ?>"> <?= $errores->ErrorFormateado('personacontacto'); ?> <br><br>
         <label for="telefono">Teléfono: <span id="obligatorio">*</span></label>
-        <input type="number" name="telefono" value="<?= (isset($_POST['telefono'])) ? $_POST['telefono'] : ""; ?>"> <?= $errores->ErrorFormateado('telefono'); ?> <br><br>
+        <input type="text" name="telefono" value="<?= (isset($_POST['telefono'])) ? $_POST['telefono'] : ""; ?>"> <?= $errores->ErrorFormateado('telefono'); ?> <br><br>
         <label for="correo">Correo electrónico: <span id="obligatorio">*</span></label>
         <input type="text" name="correo" value="<?= (isset($_POST['correo'])) ? $_POST['correo'] : ""; ?>"> <?= $errores->ErrorFormateado('correo'); ?> <br><br>
         <label for="poblacion">Población:</label>

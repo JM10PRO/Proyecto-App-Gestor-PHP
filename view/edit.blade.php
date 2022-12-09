@@ -17,7 +17,7 @@
             </p>
             <p>
                 <label for="telefono">Teléfono:</label>
-                <input type="number" name="telefono" value="{{$tarea['telefono']}}"> <?= $errores->ErrorFormateado('telefono'); ?>
+                <input type="text" name="telefono" value="{{$tarea['telefono']}}"> <?= $errores->ErrorFormateado('telefono'); ?>
             </p>
             <p>
                 <label for="correo">Correo electrónico:</label>
@@ -146,6 +146,7 @@
         </fieldset>
         <button type="submit">Enviar</button> <br><br>
     </form>
+    <a class="btn btn-secondary" href="<?= BASE_URL ?>listar?pagina={{$pagina}}">Volver al listado</a>
+    <br><br>
 </div>
-<a class="btn btn-secondary" href="<?= BASE_URL ?>listar?pagina={{$pagina}}">Volver al listado</a>
 @endsection

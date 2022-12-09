@@ -102,7 +102,7 @@ class TareasCtrl
                 'anotacionposterior' => VPost('anotacionposterior'),
                 'descripcion' => VPost('descripcion'),
                 'ficheroresumen' => VPost('ficheroresumen'),
-                'fotos' => VPost('fotos'),
+                'fotos' => VPost('fotos')
             );
 
             if (!$this->errores->HayErrores()) {
@@ -301,8 +301,9 @@ class TareasCtrl
 
     /**
      * Muestra la página para registrar nuevas tareas
+     * @return string
      */
-    public function ConfirmarDelete()
+    public function ConfirmarDelete(): string
     {
         if (isset($_GET['id'])) {
             // Han indicado el id

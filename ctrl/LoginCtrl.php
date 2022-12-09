@@ -30,7 +30,7 @@ class LoginCtrl
      *
      * @return void
      */
-    public static function getInstance()
+    public static function getInstance(): object
     {
         return new self();
     }

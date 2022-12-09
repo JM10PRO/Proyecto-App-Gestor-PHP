@@ -27,7 +27,6 @@ include(CTRL_PATH . 'LoginCtrl.php');      // Controlador de tarea
 include(CTRL_PATH . 'TareasCtrl.php');      // Controlador de tarea
 
 
-
 // Habilitamos errores detallados para que nos informe de cualquier contratiempo
 // https://www.slimframework.com/docs/v3/handlers/error.html
 /**
@@ -112,6 +111,7 @@ $app->get('/del', function (Request $request, Response $response, $args) {
 
 //Confirmación borrar tarea
 $app->any('/confirmardelete', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyLogged();
     return (new TareasCtrl())->ConfirmarDelete();
 });
 
