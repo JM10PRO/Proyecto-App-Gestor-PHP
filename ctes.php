@@ -6,4 +6,5 @@ if (!defined('APP_PATH')) {
     define('VIEW_PATH', __DIR__.'/view/');
     define('CACHE_PATH', __DIR__.'/cache/');
     define('HELPERS_PATH', __DIR__.'/helpers/');
+    define('ASSETS_PATH', __DIR__.'/assets/');
 }

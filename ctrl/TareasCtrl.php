@@ -5,12 +5,11 @@ use Jenssegers\Blade\Blade;
 include(HELPERS_PATH . 'GestorErrores.php');
 include(HELPERS_PATH . 'form.php');
 include(MODEL_PATH . 'tareas.php');
-
 /**
  * Description of Tareas
  *
- * @author santi
- * Fecha de creación 2 diciembre 2022
+ * @author José María Gil Leal
+ * Fecha de creación 3 diciembre 2022
  * versión 1.0
  */
 class TareasCtrl
@@ -223,6 +222,37 @@ class TareasCtrl
     }
 
     /**
+     * Muestra la lista de tareas
+     */
+    public function DetallesTareaOperario()
+    {
+        if (!isset($_GET['id'])) {
+            // No existe la tarea, error
+            return $this->blade->render('edit_error', [
+                'descripcion_error' => 'No existe la tarea seleccionada'
+            ]);
+        }
+
+        // Han indicado el id
+        $id = $_GET['id'];
+
+        $tarea = $this->model->GetTarea($id);
+
+        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
+        if (isset($_GET['pagina'])) {
+
+            $pagina = $_GET['pagina'];
+        } else {
+            $pagina = 1;
+        }
+
+        return $this->blade->render('operariodetallestarea', array(
+            'tarea' => $tarea,
+            'pagina' => $pagina
+        ));
+    }
+
+    /**
      * Permite modificar una tarea seleccionada
      *
      * @return void
@@ -361,13 +391,33 @@ class TareasCtrl
 
             // Creamos el objeto tarea que es el que se utiliza en el formulario
             // Lo creamos a partir de los datos recibidos del POST
-            $tarea = array(
-                'anotacionanterior' => VPost('anotacionanterior'),
-                'anotacionposterior' => VPost('anotacionposterior'),
-                'descripcion' => VPost('descripcion'),
-                'ficheroresumen' => VPost('ficheroresumen'),
-                'fotos' => VPost('fotos'),
-            );
+            $tarea_db = $this->model->GetTarea($id);
+            if (!$tarea_db) {
+                // No existe la tarea, error
+                return $this->blade->render('edit_error', [
+                    'descripcion_error' => 'No existe la tarea seleccionada.'
+                ]);
+            } else {
+                $tarea = array(
+                    'nif' =>  $tarea_db['nif'],
+                    'personacontacto' => $tarea_db['personacontacto'],
+                    'telefono' => $tarea_db['telefono'],
+                    'correo' => $tarea_db['correo'],
+                    'poblacion' => $tarea_db['poblacion'],
+                    'codpostal' => $tarea_db['codpostal'],
+                    'provincia' => $tarea_db['provincia'],
+                    'direccion' => $tarea_db['direccion'],
+                    'estado' => $tarea_db['estado'],
+                    'fechacreacion' => $tarea_db['fechacreacion'],
+                    'operario' => $tarea_db['operario'],
+                    'fechacreacion' => $tarea_db['fechacreacion'],
+                    'anotacionanterior' => VPost('anotacionanterior'),
+                    'anotacionposterior' => VPost('anotacionposterior'),
+                    'descripcion' => VPost('descripcion'),
+                    'ficheroresumen' => VPost('ficheroresumen'),
+                    'fotos' => VPost('fotos'),
+                );
+            }
 
             if ($this->errores->HayErrores()) {
                 // Mostrar ventana de nuevo
@@ -521,15 +571,6 @@ class TareasCtrl
             $this->errores->AnotaError('operario', "Por favor, introduce el nombre");
         }
 
-        function validar_fecha_espanol($fecha)
-        {
-            $valores = explode('-', $fecha);
-            if (count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])) {
-                return true;
-            }
-            return false;
-        }
-
         $validarFechaRealizacion = validar_fecha_espanol(VPost('fecharealizacion'));
 
         if (VPost('fecharealizacion') == '') {
@@ -543,6 +584,13 @@ class TareasCtrl
 
     public function FiltraCamposPostCompletarTarea()
     {
+        // Filtramos el estado de la tarea
+        if (VPost('estado') == '') {
+            $this->errores->AnotaError('estado', 'Se debe seleccionar una de las opciones');
+        } elseif (VPost('estado') != "B" && VPost('estado') != "P" && VPost('estado') != "R" && VPost('estado') != "C") {
+            $this->errores->AnotaError('estado', "Por favor, indica el estado de la tarea");
+        }
+
         // Filtramos la anotación anterior
         if (VPost('anotacionanterior') == '') {
             $this->errores->AnotaError('anotacionanterior', 'Se debe introducir texto');
@@ -553,5 +601,25 @@ class TareasCtrl
             $this->errores->AnotaError('anotacionposterior', 'Se debe introducir texto');
         }
 
+        //Filtramos el fichero subido
+        if (VPost('ficheroresumen') != '') {
+            $fichero = $_FILES['ficheroresumen'];
+            print_r($fichero);
+            exit;
+            if (!validar_fichero_subido($fichero)) {
+                $this->errores->AnotaError('ficheroresumen', 'Error en la subida del fichero');
+            }
+        }
+
+        //Filtramos la foto
+        if (VPost('fotos') != '') {
+            $fichero = $_FILES['fotos'];
+            $fichero = $_FILES['fotos'];
+            print_r($fichero);
+            exit;
+            if (!validar_fichero_subido($fichero)) {
+                $this->errores->AnotaError('fotos', 'Error en la subida de la foto');
+            }
+        }
     }
 }

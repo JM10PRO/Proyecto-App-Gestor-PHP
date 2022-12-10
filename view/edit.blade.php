@@ -4,7 +4,7 @@
 
 <h1>{{$operacion}}</h1>
 <div style="float:left">
-    <form method="post">
+    <form enctype="multipart/form-data" method="post">
         <fieldset>
             <legend>Datos persona de contacto:</legend>
             <p>

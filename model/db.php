@@ -76,7 +76,7 @@ class Db
 	public function update(string $tabla, $campos, $id): bool
 	{
 		// $nombre_campos = implode(',', array_keys($campos)); // => c1, c2,...
-		$valores_campos = array_values($campos); // => v1, v2, ..
+		// $valores_campos = array_values($campos); // => v1, v2, ..
 		// $interrogaciones = implode(',', array_map(fn ($v) => '?', $campos));
 
 		$sql = "UPDATE $tabla SET ";

@@ -76,20 +76,20 @@
                 </li>
             @endfor
         @endif
-            <!-- Ir a la página siguiente -->
-            @if($pagactual == $totalpags)
-            <li class="page-item disabled">
-                <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
-            </li>
-            @endif
-            <!-- Ir a la última página -->
-            <li class="page-item">
-                <a class="page-link" href="?pagina={{$totalpags}}"> Última página </a>
-            </li>
+        <!-- Ir a la página siguiente -->
+        @if($pagactual == $totalpags)
+        <li class="page-item disabled">
+            <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
+        </li>
+        @else
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
+        </li>
+        @endif
+        <!-- Ir a la última página -->
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{$totalpags}}"> Última página </a>
+        </li>
     </ul>
 </nav>
 @endsection

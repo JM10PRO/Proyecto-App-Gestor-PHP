@@ -102,6 +102,12 @@ $app->get('/operariolistar', function (Request $request, Response $response, $ar
     return (new TareasCtrl())->operarioListar();
 });
 
+// Ver detalles de la tarea admin
+$app->get('/operariodetallestarea', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyOperarioLogged();
+    return (new TareasCtrl())->DetallesTareaOperario();
+});
+
 // Completar tarea
 $app->any('/completartarea', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyOperarioLogged();

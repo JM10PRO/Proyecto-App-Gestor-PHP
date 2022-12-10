@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Funciones de ayuda que nos permitirán trabajar con formularios
  * 
@@ -41,6 +40,30 @@ if (!function_exists('validarNie')) {
             } else {
                 return false;
             }
+        }
+    }
+}
+
+if (!function_exists('validar_fecha_espanol')) {
+    function validar_fecha_espanol($fecha)
+    {
+        $valores = explode('-', $fecha);
+        if (count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])) {
+            return true;
+        }
+        return false;
+    }
+}
+
+if (!function_exists('validar_fichero_subido')) {
+    function validar_fichero_subido($fichero)
+    {
+        $fichero_subido = ASSETS_PATH . 'uploads/' . basename($fichero['name']);
+
+        if (move_uploaded_file($fichero['tmp_name'], $fichero_subido)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

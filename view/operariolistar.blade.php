@@ -35,7 +35,7 @@
                 <td>{{$tarea['fecharealizacion']}}</td>
                 <td>{{$tarea['descripcion']}}</td>
                 <td>
-                    <a class="btn btn-secondary" href="<?= BASE_URL ?>detalles?id={{$tarea['id']}}&pagina={{$pagactual}}">Detalles</a>
+                    <a class="btn btn-secondary" href="<?= BASE_URL ?>operariodetallestarea?id={{$tarea['id']}}&pagina={{$pagactual}}">Detalles</a>
                     <a class="btn btn-success" href="<?= BASE_URL ?>completartarea?id={{$tarea['id']}}&pagina={{$pagactual}}">Completar</a>
                 </td>
             </tr>
@@ -75,20 +75,29 @@
                 </li>
             @endfor
         @endif
-            <!-- Ir a la página siguiente -->
-            @if($pagactual == $totalpags)
-            <li class="page-item disabled">
-                <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
-            </li>
-            @endif
-            <!-- Ir a la última página -->
-            <li class="page-item">
-                <a class="page-link" href="?pagina={{$totalpags}}"> Última página </a>
-            </li>
+        <!-- Ir a la página siguiente -->
+        @if($pagactual == $totalpags)
+        <li class="page-item disabled">
+            <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
+        </li>
+        @else
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{$pagactual+1}}"> >> </a>
+        </li>
+        @endif
+        <!-- Ir a la última página -->
+        <li class="page-item">
+            <a class="page-link" href="?pagina={{$totalpags}}"> Última página </a>
+        </li>
+        <!-- Navegar a la página seleccionada -->
+        <form method="get">
+            <button type="submit" class="page-link irpag" style="margin-left: 35px;">Ir a la página</button>
+            <select name="pagina" id="" style="margin-left: 10px; padding: 6px; padding-bottom: 7px;">
+                @for ($i = 1; $i <= $totalpags; $i++) 
+                    <option value="{{$i}}" @if(isset($_GET['pagina']) && $_GET['pagina'] == $i) selected @endif >{{$i}}</option>
+                @endfor
+            </select>
+        </form>
     </ul>
 </nav>
 @endsection

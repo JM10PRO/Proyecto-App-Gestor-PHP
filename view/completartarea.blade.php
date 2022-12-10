@@ -4,7 +4,7 @@
 
 <h1>{{$operacion}}</h1>
 <div style="float:left">
-    <form method="post">
+    <form enctype="multipart/form-data" method="post">
         <fieldset>
             <legend>Datos persona de contacto:</legend>
             <p>
@@ -37,10 +37,10 @@
             </p>
             <p>
                 <label for="estado">Estado de la tarea:</label>
-                <input type="radio" name="estado" id="" value="B" <?= ($tarea['estado']) == 'B' ? "checked" : ""; ?> > B=Esperando a ser aprobada
-                <input type="radio" name="estado" id="" value="P" <?= ($tarea['estado']) == 'P' ? "checked" : ""; ?> > P=Pendiente
-                <input type="radio" name="estado" id="" value="R" <?= ($tarea['estado']) == 'R' ? "checked" : ""; ?> > R=Realizada
-                <input type="radio" name="estado" id="" value="C" <?= ($tarea['estado']) == 'C' ? "checked" : ""; ?> > C=Cancelada
+                <input type="radio" name="estado" id="" value="B" <?= ($tarea['estado']) == 'B' ? "checked" : ""; ?>> B=Esperando a ser aprobada
+                <input type="radio" name="estado" id="" value="P" <?= ($tarea['estado']) == 'P' ? "checked" : ""; ?>> P=Pendiente
+                <input type="radio" name="estado" id="" value="R" <?= ($tarea['estado']) == 'R' ? "checked" : ""; ?>> R=Realizada
+                <input type="radio" name="estado" id="" value="C" <?= ($tarea['estado']) == 'C' ? "checked" : ""; ?>> C=Cancelada
                 <?= $errores->ErrorFormateado('estado'); ?>
             </p>
             <p>
@@ -63,11 +63,13 @@
                 <?= $errores->ErrorFormateado('anotacionposterior'); ?>
             </p>
             <p>
-            <label for="descripcion">Descripción de la tarea: </label> <br>
+                <label for="descripcion">Descripción de la tarea: </label> <br>
             <p>{{$tarea['descripcion']}}</p>
             </p>
             <p>
                 <label for="ficheroresumen">Fichero resumen de tareas realizadas:</label>
+                <!-- MAX_FILE_SIZE debe preceder al campo de entrada del fichero -->
+                <input type="hidden" name="MAX_FILE_SIZE" value="30000">
                 <input type="file" name="ficheroresumen" id="" value="{{$tarea['ficheroresumen']}}">
                 <?= $errores->ErrorFormateado('ficheroresumen'); ?>
             </p>
