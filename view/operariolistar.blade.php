@@ -6,7 +6,7 @@
  * que contiene las tareas a mostrar
  */
 ?>
-@extends('_template')
+@extends('operario_template')
 
 @section('cuerpo')
 <h1>{{$operacion}}</h1>
@@ -36,8 +36,7 @@
                 <td>{{$tarea['descripcion']}}</td>
                 <td>
                     <a class="btn btn-secondary" href="<?= BASE_URL ?>detalles?id={{$tarea['id']}}&pagina={{$pagactual}}">Detalles</a>
-                    <a class="btn btn-primary" href="<?= BASE_URL ?>edit?id={{$tarea['id']}}&pagina={{$pagactual}}">Modificar</a>
-                    <a class="btn btn-danger" href="<?= BASE_URL ?>confirmardelete?id={{$tarea['id']}}&pagina={{$pagactual}}">Borrar</a>
+                    <a class="btn btn-success" href="<?= BASE_URL ?>completartarea?id={{$tarea['id']}}&pagina={{$pagactual}}">Completar</a>
                 </td>
             </tr>
             @endforeach

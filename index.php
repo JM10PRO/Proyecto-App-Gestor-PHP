@@ -56,16 +56,9 @@ $app->get('/logout', function (Request $request, Response $response, $args) {
 // RUTAS QUE PROCESAN LAS TAREAS
 //
 
-// Página principal
-$app->get('/', function (Request $request, Response $response, $args) {
-    /* Session->onlyLogged() chequea si esta logeado y si no está devuelve una redirección
-    y finaliza el script (no continua el código)
-    */
-    Session::getInstance()->onlyLogged();
-    return (new TareasCtrl())->Inicio();
-});
+// ====ADMIN====
 
-// Listar admin
+// Listar admin (página principal)
 $app->get('/listar', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
     return (new TareasCtrl())->Listar();
@@ -83,36 +76,36 @@ $app->get('/detalles', function (Request $request, Response $response, $args) {
     return (new TareasCtrl())->DetallesTarea();
 });
 
-// Alta
-// Observad que aquí no se pone 'get' pues la petición puede llegar por GET o por POST
-// $app->post('/add', function (Request $request, Response $response, $args) {
-//     Session::getInstance()->onlyLogged();
-//     return (new TareasCtrl())->Add();
-// });
-
-// Alta
-// Repetimos ruta con GET. Lo más sencillo hubiese sido poner $app->any(...)
-// $app->get('/add', function (Request $request, Response $response, $args) {
-//     Session::getInstance()->onlyLogged();
-//     return (new TareasCtrl())->Add();
-// });
-
 // Modificar
 $app->any('/edit', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
+    Session::getInstance()->onlyAdminLogged();
     return (new TareasCtrl())->Edit();
 });
 
 // Borrar
 $app->get('/del', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
+    Session::getInstance()->onlyAdminLogged();
     return (new TareasCtrl())->Del();
 });
 
 //Confirmación borrar tarea
 $app->any('/confirmardelete', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
+    Session::getInstance()->onlyAdminLogged();
     return (new TareasCtrl())->ConfirmarDelete();
+});
+
+// ====OPERARIO====
+
+// Listar OPERARIO
+$app->get('/operariolistar', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyOperarioLogged();
+    return (new TareasCtrl())->operarioListar();
+});
+
+// Completar tarea
+$app->any('/completartarea', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyOperarioLogged();
+    return (new TareasCtrl())->completarTarea();
 });
 
 

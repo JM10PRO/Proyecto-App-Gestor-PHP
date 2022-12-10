@@ -138,38 +138,52 @@ class TareasCtrl
      */
     public function Listar()
     {
-
         $tamano_paginas = 5;
-
         if (isset($_GET['pagina'])) {
-            
             if ($_GET['pagina'] == 1) {
-            
                 Session::redirect('/listar');
-            
             } else {
-            
                 $pagina = $_GET['pagina'];
-            
             }
-
-        }else{
-
+        } else {
             $pagina = 1;
-
         }
-
         $empezar_desde = ($pagina - 1) * $tamano_paginas;
-
         $num_filas = $this->model->GetTareas();
-
         $num_filas = count($num_filas);
-
-        $total_paginas = ceil($num_filas/$tamano_paginas);
-
-        $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion',$empezar_desde,$tamano_paginas);
+        $total_paginas = ceil($num_filas / $tamano_paginas);
+        $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion', $empezar_desde, $tamano_paginas);
 
         return $this->blade->render('listar', array(
+            'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
+            'tareas' => $tareas,
+            'pagactual' => $pagina,
+            'totalpags' => $total_paginas
+        ));
+    }
+
+    /**
+     * Muestra la lista de tareas (OPERARIO)
+     */
+    public function operarioListar()
+    {
+        $tamano_paginas = 5;
+        if (isset($_GET['pagina'])) {
+            if ($_GET['pagina'] == 1) {
+                Session::redirect('/operariolistar');
+            } else {
+                $pagina = $_GET['pagina'];
+            }
+        } else {
+            $pagina = 1;
+        }
+        $empezar_desde = ($pagina - 1) * $tamano_paginas;
+        $num_filas = $this->model->GetTareas();
+        $num_filas = count($num_filas);
+        $total_paginas = ceil($num_filas / $tamano_paginas);
+        $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion', $empezar_desde, $tamano_paginas);
+
+        return $this->blade->render('operariolistar', array(
             'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
             'tareas' => $tareas,
             'pagactual' => $pagina,
@@ -196,10 +210,9 @@ class TareasCtrl
 
         // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
         if (isset($_GET['pagina'])) {
-            
-            $pagina = $_GET['pagina'];
 
-        }else{
+            $pagina = $_GET['pagina'];
+        } else {
             $pagina = 1;
         }
 
@@ -228,10 +241,9 @@ class TareasCtrl
 
         // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
         if (isset($_GET['pagina'])) {
-            
-            $pagina = $_GET['pagina'];
 
-        }else{
+            $pagina = $_GET['pagina'];
+        } else {
             $pagina = 1;
         }
 
@@ -300,6 +312,83 @@ class TareasCtrl
     }
 
     /**
+     * Permite al operario completar una tarea seleccionada (solo algunos campos disponibles)
+     *
+     * @return void
+     */
+    public function completarTarea()
+    {
+        if (!isset($_GET['id'])) {
+            // No existe la tarea, error
+            return $this->blade->render('edit_error', [
+                'descripcion_error' => 'No existe la tarea seleccionada'
+            ]);
+        }
+
+        // Han indicado el id
+        $id = $_GET['id'];
+
+        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
+        if (isset($_GET['pagina'])) {
+
+            $pagina = $_GET['pagina'];
+        } else {
+            $pagina = 1;
+        }
+
+
+        if (!$_POST) {
+            // Primera vez.
+            // Leo el regitro y muestro los datos
+            $tarea = $this->model->GetTarea($id);
+            if (!$tarea) {
+                // No existe la tarea, error
+                return $this->blade->render('edit_error', [
+                    'descripcion_error' => 'No existe la tarea seleccionada.'
+                ]);
+            } else {
+                // Mostramos los datos
+                return $this->blade->render('completartarea', [
+                    'operacion' => 'Completar tarea',
+                    'tarea' => $tarea,
+                    'pagina' => $pagina,
+                    'errores' => $this->errores
+                ]);
+            }
+        } else {
+            // Filtrar datos
+            $this->FiltraCamposPostCompletarTarea();
+
+            // Creamos el objeto tarea que es el que se utiliza en el formulario
+            // Lo creamos a partir de los datos recibidos del POST
+            $tarea = array(
+                'anotacionanterior' => VPost('anotacionanterior'),
+                'anotacionposterior' => VPost('anotacionposterior'),
+                'descripcion' => VPost('descripcion'),
+                'ficheroresumen' => VPost('ficheroresumen'),
+                'fotos' => VPost('fotos'),
+            );
+
+            if ($this->errores->HayErrores()) {
+                // Mostrar ventana de nuevo
+                return $this->blade->render('completartarea', array(
+                    'operacion' => 'Completar tarea',
+                    'tarea' => $tarea,
+                    'pagina' => $pagina,
+                    'errores' => $this->errores
+                ));
+            } else {
+                // Guardamos la tarea
+                $this->model->Update($id, $tarea);
+                return $this->blade->render('operariomsg', array(
+                    'descripcion' => "Se ha guardado la tarea",
+                    'pagina' => $pagina
+                ));
+            }
+        }
+    }
+
+    /**
      * Muestra la página para registrar nuevas tareas
      * @return string
      */
@@ -314,13 +403,12 @@ class TareasCtrl
 
         // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
         if (isset($_GET['pagina'])) {
-            
-            $pagina = $_GET['pagina'];
 
-        }else{
+            $pagina = $_GET['pagina'];
+        } else {
             $pagina = 1;
         }
-        
+
         return $this->blade->render('confirmardelete', array(
             'tarea' => $tarea,
             'pagina' => $pagina
@@ -397,7 +485,7 @@ class TareasCtrl
         // Filtramos el código postal
         if (VPost('codpostal') == '') {
             $this->errores->AnotaError('codpostal', 'Se debe introducir el código postal');
-        }elseif (strlen(VPost('codpostal')) != 5) {
+        } elseif (strlen(VPost('codpostal')) != 5) {
             $this->errores->AnotaError('codpostal', 'El código postal debe tener 5 números');
         }
 
@@ -433,9 +521,10 @@ class TareasCtrl
             $this->errores->AnotaError('operario', "Por favor, introduce el nombre");
         }
 
-        function validar_fecha_espanol($fecha){
+        function validar_fecha_espanol($fecha)
+        {
             $valores = explode('-', $fecha);
-            if(count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])){
+            if (count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])) {
                 return true;
             }
             return false;
@@ -445,10 +534,24 @@ class TareasCtrl
 
         if (VPost('fecharealizacion') == '') {
             $this->errores->AnotaError('fecharealizacion', 'Se debe introducir una fecha');
-        }elseif(!$validarFechaRealizacion){
+        } elseif (!$validarFechaRealizacion) {
             $this->errores->AnotaError('fecharealizacion', 'Introduzca una fecha válida');
-        }elseif (VPost('fecharealizacion') < date("Y-m-d")){
+        } elseif (VPost('fecharealizacion') < date("Y-m-d")) {
             $this->errores->AnotaError('fecharealizacion', 'La fecha de realizacíon debe ser posterior a hoy');
         }
+    }
+
+    public function FiltraCamposPostCompletarTarea()
+    {
+        // Filtramos la anotación anterior
+        if (VPost('anotacionanterior') == '') {
+            $this->errores->AnotaError('anotacionanterior', 'Se debe introducir texto');
+        }
+
+        // Filtramos la anotación posterior
+        if (VPost('anotacionposterior') == '') {
+            $this->errores->AnotaError('anotacionposterior', 'Se debe introducir texto');
+        }
+
     }
 }

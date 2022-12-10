@@ -110,6 +110,16 @@ class Session
     }
 
     /**
+     * Indica si un usuario es operario
+     *
+     * @return boolean
+     */
+    public function isOperario(): bool
+    {
+        return $_SESSION[self::USER_ROL] == 'operario';
+    }
+
+    /**
      * Comprueba si el usuario está logeado y si no está redirige a la página de login y finaliza
      * el script
      *
@@ -129,8 +139,24 @@ class Session
      */
     public function onlyAdminLogged(): void
     {
-        if (!$this->isLogged() || !$this->isAdmin())
+        if (!$this->isLogged() || !$this->isAdmin()){
+            $this->logout();
             self::redirect(self::URL_LOGIN);
+        }
+    }
+
+    /**
+     * Comprueba si el usuario es operario y está logeado y si no está redirige a la página de login y finaliza
+     * el script
+     *
+     * @return void
+     */
+    public function onlyOperarioLogged(): void
+    {
+        if (!$this->isLogged() || !$this->isOperario()){
+            $this->logout();
+            self::redirect(self::URL_LOGIN);
+        }
     }
 
     /**

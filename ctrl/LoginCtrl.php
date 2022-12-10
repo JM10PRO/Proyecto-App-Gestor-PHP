@@ -53,8 +53,8 @@ class LoginCtrl
                 // exit;
                 if(Session::getInstance()->isAdmin()){
                     Session::redirect('/listar');
-                }else{
-                    Session::redirect('/');
+                }elseif(Session::getInstance()->isOperario()){
+                    Session::redirect('/operariolistar');
                 }
                 // Aquí no se llega, redirect ha finalizao el script
             }
