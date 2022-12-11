@@ -69,7 +69,7 @@
             <p>
                 <label for="ficheroresumen">Fichero resumen de tareas realizadas:</label>
                 <!-- MAX_FILE_SIZE debe preceder al campo de entrada del fichero -->
-                <input type="hidden" name="MAX_FILE_SIZE" value="30000">
+                <!-- <input type="hidden" name="MAX_FILE_SIZE" value="30000"> -->
                 <input type="file" name="ficheroresumen" id="" value="{{$tarea['ficheroresumen']}}">
                 <?= $errores->ErrorFormateado('ficheroresumen'); ?>
             </p>

@@ -387,10 +387,10 @@ class TareasCtrl
             }
         } else {
             // Filtrar datos
-            $this->FiltraCamposPostCompletarTarea();
+            $this->FiltraCamposPostCompletarTarea($id);
 
             // Creamos el objeto tarea que es el que se utiliza en el formulario
-            // Lo creamos a partir de los datos recibidos del POST
+            // Lo creamos a partir de los datos recibidos del POST y de los datos de la tarea que estaban guardados, porque solo modificamos algunos
             $tarea_db = $this->model->GetTarea($id);
             if (!$tarea_db) {
                 // No existe la tarea, error
@@ -410,12 +410,12 @@ class TareasCtrl
                     'estado' => $tarea_db['estado'],
                     'fechacreacion' => $tarea_db['fechacreacion'],
                     'operario' => $tarea_db['operario'],
-                    'fechacreacion' => $tarea_db['fechacreacion'],
+                    'fecharealizacion' => $tarea_db['fecharealizacion'],
                     'anotacionanterior' => VPost('anotacionanterior'),
                     'anotacionposterior' => VPost('anotacionposterior'),
                     'descripcion' => VPost('descripcion'),
-                    'ficheroresumen' => VPost('ficheroresumen'),
-                    'fotos' => VPost('fotos'),
+                    'ficheroresumen' => $_FILES['ficheroresumen']['name'],
+                    'fotos' => $_FILES['fotos']['name']
                 );
             }
 
@@ -582,7 +582,7 @@ class TareasCtrl
         }
     }
 
-    public function FiltraCamposPostCompletarTarea()
+    public function FiltraCamposPostCompletarTarea($id)
     {
         // Filtramos el estado de la tarea
         if (VPost('estado') == '') {
@@ -602,24 +602,67 @@ class TareasCtrl
         }
 
         //Filtramos el fichero subido
-        if (VPost('ficheroresumen') != '') {
-            $fichero = $_FILES['ficheroresumen'];
-            print_r($fichero);
-            exit;
-            if (!validar_fichero_subido($fichero)) {
-                $this->errores->AnotaError('ficheroresumen', 'Error en la subida del fichero');
-            }
-        }
+        $this->validarFichero($_FILES['ficheroresumen'],$id,'ficheroresumen');
+        // if(!$this->validarFichero($_FILES['ficheroresumen'],$id,'ficheroresumen')){
+        //     $this->errores->AnotaError('ficheroresumen','Error al cargar el archivo');
+        // }
+        
+        //Filtramos el fichero subido
+        $this->validarFichero($_FILES['fotos'],$id,'fotos');
+        // if(!$this->validarFichero($_FILES['fotos'],$id,'fotos')){
+        //     $this->errores->AnotaError('fotos','Error al cargar el archivo');
+        // }
+    }
+    /**
+     * Valida el fichero que subimos en el input file de HTML. Si retorna true, el archivo se ha subido a la carpeta indicada. Si retorna false, existe algún problema en la carga del archivo. También almacena los errores en el GestorErrores si está inicializado en la clase donde está la función.
+     *
+     * @param array $nombreFichero - debes indicar la variable  $_FILES['nombre_archivo']
+     * @param integer $id - identificador de la tarea que predecerá al nombre del archivo
+     * @param string $campo - nombre del campo en el input file de HTML
+     * @return boolean|null
+     */
+    public function validarFichero(array $nombreFichero, int $id, string $campo): ?bool
+    {
+        //depuracion
+        // echo '<pre>';
+        // print_r($nombreFichero['error']);
+        // print_r($_FILES);
+        // print_r($_POST);
+        // exit;
+        if($nombreFichero['error'] == 0){
 
-        //Filtramos la foto
-        if (VPost('fotos') != '') {
-            $fichero = $_FILES['fotos'];
-            $fichero = $_FILES['fotos'];
-            print_r($fichero);
-            exit;
-            if (!validar_fichero_subido($fichero)) {
-                $this->errores->AnotaError('fotos', 'Error en la subida de la foto');
+            $dir = ASSETS_PATH . "uploads/";
+            $tamano_max = 30000; //kb
+            $ext_permitidas = array('doc','docx','odt','pdf','jpg','jpeg','png');
+            $ruta_carga = $dir . $id ."_". $nombreFichero['name'];
+            $arr_archivo = explode(".", $nombreFichero['name']);
+            $extension = strtolower(end($arr_archivo));
+            
+            if(in_array($extension,$ext_permitidas)){
+                if($nombreFichero['size'] < $tamano_max * 1024){
+                    if(!file_exists($dir)){
+                        mkdir($dir, 0777);
+                    }
+                    if(move_uploaded_file($nombreFichero['tmp_name'], $ruta_carga)){
+                        return true; // se ha subido correctamente
+                    }else{
+                        return false; // error al cargar el archivo
+                    }
+                }else{
+                    $this->errores->AnotaError($campo,'El archivo excede el tamaño permitido');
+                    return false;
+                }
+            }else{
+                $this->errores->AnotaError($campo,'Archivo no permitido');
+                return false;
             }
+
+        }elseif($nombreFichero['error'] == 4){
+            $this->errores->AnotaError($campo,'No has subido archivo');
+            return false;
+        }else {
+            $this->errores->AnotaError($campo,'Error en la subida del archivo');
+            return false;
         }
     }
 }
