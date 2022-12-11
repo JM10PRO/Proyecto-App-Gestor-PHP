@@ -162,6 +162,36 @@ class TareasCtrl
     }
 
     /**
+     * Muestra la lista de tareas
+     */
+    public function ListarTareasPendientes()
+    {
+        $tamano_paginas = 5;
+        if (isset($_GET['pagina'])) {
+            if ($_GET['pagina'] == 1) {
+                Session::redirect('/listartareaspendientes');
+            } else {
+                $pagina = $_GET['pagina'];
+            }
+        } else {
+            $pagina = 1;
+        }
+        
+        $empezar_desde = ($pagina - 1) * $tamano_paginas;
+        $tareas_p = $this->model->GetTareasWhere('estado','P');
+        $num_filas = count($tareas_p);
+        $total_paginas = ceil($num_filas / $tamano_paginas);
+        $tareas = $this->model->GetTareasWhereOrderByLimitePag('estado','P','fecharealizacion',$empezar_desde, $tamano_paginas);
+
+        return $this->blade->render('listar', array(
+            'operacion' => 'Listado de tareas pendientes - Página ' . $pagina . " de " . $total_paginas,
+            'tareas' => $tareas,
+            'pagactual' => $pagina,
+            'totalpags' => $total_paginas
+        ));
+    }
+
+    /**
      * Muestra la lista de tareas (OPERARIO)
      */
     public function operarioListar()
@@ -184,6 +214,35 @@ class TareasCtrl
 
         return $this->blade->render('operariolistar', array(
             'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
+            'tareas' => $tareas,
+            'pagactual' => $pagina,
+            'totalpags' => $total_paginas
+        ));
+    }
+
+    /**
+     * Muestra la lista de tareas
+     */
+    public function operarioListarTareasPendientes()
+    {
+        $tamano_paginas = 5;
+        if (isset($_GET['pagina'])) {
+            if ($_GET['pagina'] == 1) {
+                Session::redirect('/operariolistartareaspendientes');
+            } else {
+                $pagina = $_GET['pagina'];
+            }
+        } else {
+            $pagina = 1;
+        }
+        $empezar_desde = ($pagina - 1) * $tamano_paginas;
+        $tareas_p = $this->model->GetTareasWhere('estado','P');
+        $num_filas = count($tareas_p);
+        $total_paginas = ceil($num_filas / $tamano_paginas);
+        $tareas = $this->model->GetTareasWhereOrderByLimitePag('estado','P','fecharealizacion',$empezar_desde, $tamano_paginas);
+        
+        return $this->blade->render('operariolistar', array(
+            'operacion' => 'Listado de tareas pendientes - Página ' . $pagina . " de " . $total_paginas,
             'tareas' => $tareas,
             'pagactual' => $pagina,
             'totalpags' => $total_paginas
@@ -314,7 +373,7 @@ class TareasCtrl
                 'estado' => VPost('estado'),
                 'fechacreacion' => VPost('fechacreacion'),
                 'operario' => VPost('operario'),
-                'fechacreacion' => VPost('fechacreacion'),
+                'fecharealizacion' => VPost('fecharealizacion'),
                 'anotacionanterior' => VPost('anotacionanterior'),
                 'anotacionposterior' => VPost('anotacionposterior'),
                 'descripcion' => VPost('descripcion'),

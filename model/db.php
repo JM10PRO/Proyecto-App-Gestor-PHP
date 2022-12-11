@@ -206,6 +206,19 @@ class Db
 		return $pdo_stm->fetchAll();
 	}
 
+	public function selectWhereOrderBy(string $tabla, string $where_key, string $where_value, string $order_value, int $empezar_desde, int $tamano_paginas): ?array
+	{
+		$sql = "SELECT * FROM $tabla WHERE $where_key='$where_value' ORDER BY $order_value DESC LIMIT $empezar_desde,$tamano_paginas";
+		/*
+		// Para depuración
+		echo "<pre>SQL: $sql \n Valores\n";
+		print_r($campos);
+		//exit;*/
+		$pdo_stm = $this->pdo->prepare($sql);
+		$pdo_stm->execute();
+		return $pdo_stm->fetchAll();
+	}
+
 	public function getUserCredentials(string $user, string $pass, string $db_user = 'usuario', string $db_pass = 'password'): ?array
 	{
 		$sql = "SELECT * FROM usuarios WHERE $db_user=:usuario AND $db_pass=:passwd LIMIT 1";

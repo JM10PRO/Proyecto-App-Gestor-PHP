@@ -83,3 +83,17 @@ h1 {
 span#obligatorio {
     color: #f00;
 }
+
+a#cerrarsesion:link {
+    color: #6392f7;
+    text-shadow: 1px 1px #000;
+}
+a#cerrarsesion:visited {
+    color: #6392f7;
+}
+a#cerrarsesion:hover {
+    color: #ff0000
+}
+a#cerrarsesion:active {
+    color: rgb(255, 255, 0);
+}

@@ -96,7 +96,7 @@
         <label for="anotacionposterior">Anotaciones posteriores:</label>
         <input type="text" name="anotacionposterior" id="" value="<?= (isset($_POST['anotacionposterior'])) ? $_POST['anotacionposterior'] : ""; ?>"> <?= $errores->ErrorFormateado('anotacionposterior'); ?> <br><br>
         <label for="descripcion">Descripción de la tarea: <span id="obligatorio">*</span></label> <br>
-        <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añada una descripción de la tarea..." value="<?= (isset($_POST['descripcion'])) ? $_POST['descripcion'] : ""; ?>"></textarea> <?= $errores->ErrorFormateado('descripcion'); ?> 
+        <textarea name="descripcion" id="" cols="30" rows="10" placeholder="Añade una descripción de la tarea..." value="<?= (isset($_POST['descripcion'])) ? $_POST['descripcion'] : ""; ?>"></textarea> <?= $errores->ErrorFormateado('descripcion'); ?> 
         <br><br>
         <!-- MAX_FILE_SIZE debe preceder al campo de entrada del fichero -->
         <input type="hidden" name="MAX_FILE_SIZE" value="30000">
@@ -108,5 +108,4 @@
     </fieldset>
     <input type="submit" name="submit">
 </form>
-
 @endsection

@@ -69,6 +69,12 @@ $app->get('/listar', function (Request $request, Response $response, $args) {
     return (new TareasCtrl())->Listar();
 });
 
+// Listar tareas pendientes admin
+$app->get('/listartareaspendientes', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyLogged();
+    return (new TareasCtrl())->ListarTareasPendientes();
+});
+
 // Nueva tarea admin
 $app->any('/nuevatarea', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
@@ -107,13 +113,19 @@ $app->get('/operariolistar', function (Request $request, Response $response, $ar
     return (new TareasCtrl())->operarioListar();
 });
 
-// Ver detalles de la tarea admin
+// Listar tareas pendientes operario
+$app->get('/operariolistartareaspendientes', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyLogged();
+    return (new TareasCtrl())->operarioListarTareasPendientes();
+});
+
+// Ver detalles de la tarea operario
 $app->get('/operariodetallestarea', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyOperarioLogged();
     return (new TareasCtrl())->DetallesTareaOperario();
 });
 
-// Completar tarea
+// Completar tarea operario
 $app->any('/completartarea', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyOperarioLogged();
     return (new TareasCtrl())->completarTarea();

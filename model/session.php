@@ -12,6 +12,7 @@ class Session
     const SESS_DATA = 'sess_data';
     const IDX_ESTA_DENTRO = 'idx_dentro';
     const USER_ROL = 'user_rol';
+    const HORA_CONEX = 'hora_conex';
     const URL_LOGIN = 'login';
 
     // Más ctes o atributos como tipo de usuario, nombre, etc
@@ -60,6 +61,7 @@ class Session
         if ($credenciales != null) {
             // Usuario y clave correctos
              $_SESSION[self::IDX_ESTA_DENTRO] = true;
+             $_SESSION[self::HORA_CONEX] = date('H:i');
              $_SESSION['usuario_conectado'] = $user;
              $_SESSION['rol'] = $credenciales[0][3];
              if($_SESSION['rol'] == 'admin'){

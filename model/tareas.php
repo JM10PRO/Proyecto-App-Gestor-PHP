@@ -25,9 +25,32 @@ class Tareas_Model
      * Simulamos lectura de base de datos, aunque leemos de sessión
      * @return array
      */
+    public function GetTareasWhere($where_key,$where_value)
+    {
+        $pdo = Db::getInstance()->pdo();
+
+        $rs = $pdo->query("SELECT * FROM tareas WHERE $where_key='$where_value'");
+        return $rs->fetchAll();
+    }
+
+    /**
+     * Devuelve las tareas existentes.
+     * Simulamos lectura de base de datos, aunque leemos de sessión
+     * @return array
+     */
     public function GetTareasOrderByLimitePag($order_value,$empezar_desde,$tamano_paginas)
     {
         return Db::getInstance()->orderByLimit('tareas', $order_value,$empezar_desde,$tamano_paginas);
+    }
+
+    /**
+     * Devuelve las tareas existentes.
+     * Simulamos lectura de base de datos, aunque leemos de sessión
+     * @return array
+     */
+    public function GetTareasWhereOrderByLimitePag($where_key,$where_value,$order_value,$empezar_desde,$tamano_paginas)
+    {
+        return Db::getInstance()->selectWhereOrderBy('tareas', $where_key, $where_value,$order_value,$empezar_desde,$tamano_paginas);
     }
 
     /**
