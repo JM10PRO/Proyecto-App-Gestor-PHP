@@ -17,8 +17,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 //
 // Si utilizamos como servidor el interprete de php ejecutando en el terminal
 // php -S localhost:8000
-// define('BASE_URL', 'http://localhost:3000/index.php/');
-define('BASE_URL', 'http://localhost/appPHP/index.php/');
+define('BASE_URL', 'http://localhost:3000/index.php/');
+// define('BASE_URL', 'http://localhost/appPHP/index.php/');
 
 require __DIR__ . '/vendor/autoload.php'; // Autocargador para los componentes instalados desde composer (en este caso Slim y blade)
 require __DIR__ . '/ctes.php'; // definimos constantes que facilitan el trabajo

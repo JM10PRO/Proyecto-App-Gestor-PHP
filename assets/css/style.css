@@ -85,11 +85,11 @@ span#obligatorio {
 }
 
 a#cerrarsesion:link {
-    color: #6392f7;
+    color: #bcd1ff;
     text-shadow: 1px 1px #000;
 }
 a#cerrarsesion:visited {
-    color: #6392f7;
+    color: #bcd1ff;
 }
 a#cerrarsesion:hover {
     color: #ff0000
