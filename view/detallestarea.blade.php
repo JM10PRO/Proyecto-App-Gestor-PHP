@@ -53,8 +53,9 @@
                 <td>{{$tarea['anotacionanterior']}}</td>
                 <td>{{$tarea['anotacionposterior']}}</td>
                 <td>{{$tarea['descripcion']}}</td>
-                <td><a href="\appPHP\assets\uploads\{{$tarea['id']}}_{{$tarea['ficheroresumen']}}"></a>{{$tarea['ficheroresumen']}}</td>
-                <td><a href="\appPHP\assets\uploads\{{$tarea['id']}}_{{$tarea['fotos']}}"></a>{{$tarea['fotos']}}</td>
+                <td><a href="\appPHP\assets\uploads\{{$tarea['ficheroresumen']}}" target="_blank">{{$tarea['ficheroresumen']}}</a></td>
+                <td><a href="\appPHP\assets\uploads\{{$tarea['fotos']}}" target="_blank">{{$tarea['fotos']}}</a></td>
+                <td>
                 <td>
                     <a class="btn btn-primary" href="<?= BASE_URL ?>edit?id={{$tarea['id']}}">Modificar</a>
                     <a class="btn btn-danger" href="<?= BASE_URL ?>confirmardelete?id={{$tarea['id']}}">Borrar</a>

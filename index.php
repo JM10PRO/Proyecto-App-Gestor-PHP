@@ -37,6 +37,10 @@ include(CTRL_PATH . 'TareasCtrl.php');      // Controlador de tarea
 $app = new \Slim\App(['settings' => ['displayErrorDetails' => true,],]);
 
 // Definimos rutas que procesamos
+// RUTA PARA EL INICIO DE LA APLICACIÓN, REDIRIGE A LOGIN
+$app->any('/', function (Request $request, Response $response, $args) {
+    return LoginCtrl::getInstance()->login();
+});
 
 //
 //  RUTAS PARA LOGIN/LOGOUT

@@ -53,8 +53,8 @@
                 <td>{{$tarea['anotacionanterior']}}</td>
                 <td>{{$tarea['anotacionposterior']}}</td>
                 <td>{{$tarea['descripcion']}}</td>
-                <td><a href="\appPHP\assets\uploads\{{$tarea['id']}}_{{$tarea['ficheroresumen']}}" target="_blank">{{$tarea['ficheroresumen']}}</a></td>
-                <td><a href="\appPHP\assets\uploads\{{$tarea['id']}}_{{$tarea['fotos']}}" target="_blank">{{$tarea['fotos']}}</a></td>
+                <td><a href="\appPHP\assets\uploads\{{$tarea['ficheroresumen']}}" target="_blank">{{$tarea['ficheroresumen']}}</a></td>
+                <td><a href="\appPHP\assets\uploads\{{$tarea['fotos']}}" target="_blank">{{$tarea['fotos']}}</a></td>
                 <td>
                 <a class="btn btn-success" href="<?= BASE_URL ?>completartarea?id={{$tarea['id']}}&pagina={{$pagina}}">Completar</a>
                 </td>
