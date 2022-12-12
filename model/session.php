@@ -46,7 +46,7 @@ class Session
     }
 
     /**
-     * Undocumented function
+     * Verifica si el usuario se encuentra en la base de datos, asigna el rol y guarda la hora de inicio de sesión.
      *
      * @param string $user Usuario a logearse
      * @param string $passwd Clave del usuario
@@ -71,10 +71,6 @@ class Session
              }
              return true;
         }
-        // else{
-        //     self::redirect(self::URL_LOGIN);
-        // }
-
         return false;
     }
 
@@ -148,8 +144,7 @@ class Session
     }
 
     /**
-     * Comprueba si el usuario es operario y está logeado y si no está redirige a la página de login y finaliza
-     * el script
+     * Comprueba si el usuario es operario y está logeado y si no está redirige a la página de login y finaliza el script
      *
      * @return void
      */

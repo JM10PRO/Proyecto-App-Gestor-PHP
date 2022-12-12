@@ -1,7 +1,7 @@
 <?php
 include_once(__DIR__ . '/db.php');
 
-class Tareas_Model
+class Usuarios_Model
 {
     public function __construct()
     {
@@ -12,11 +12,11 @@ class Tareas_Model
      * Simulamos lectura de base de datos, aunque leemos de sessión
      * @return array
      */
-    public function GetTareas()
+    public function GetUsuarios()
     {
         $pdo = Db::getInstance()->pdo();
 
-        $rs = $pdo->query("SELECT * FROM tareas");
+        $rs = $pdo->query("SELECT * FROM usuarios");
         return $rs->fetchAll();
     }
 
@@ -38,9 +38,9 @@ class Tareas_Model
      * Simulamos lectura de base de datos, aunque leemos de sessión
      * @return array
      */
-    public function GetTareasOrderByLimitePag($order_value,$empezar_desde,$tamano_paginas)
+    public function GetUsuariosOrderByLimitePag($order_value,$empezar_desde,$tamano_paginas)
     {
-        return Db::getInstance()->orderByLimit('tareas', $order_value,$empezar_desde,$tamano_paginas);
+        return Db::getInstance()->orderByLimitASC('usuarios', $order_value,$empezar_desde,$tamano_paginas);
     }
 
     /**
@@ -54,13 +54,13 @@ class Tareas_Model
     }
 
     /**
-     * Devuelve los datos de una tarea
+     * Devuelve los datos de un usuario
      * @param string $id
      * @return boolean
      */
-    public function GetTarea($id)
+    public function GetUsuario($id)
     {
-        return DB::getInstance()->find('tareas', $id);
+        return DB::getInstance()->find('usuarios', $id);
     }
 
     /**

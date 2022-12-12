@@ -11,24 +11,29 @@ include(HELPERS_PATH . 'form.php');
 
 
 /**
- * Description of Tareas
+ * LoginCtrl es la clase manejadora de los eventos relacionados con el login y el inicio de sesión de los usuarios
  *
- * @author santi
+ * @author José María Gil Leal
+ * Fecha de creación 3 diciembre 2022
+ * versión 2.0
  */
 class LoginCtrl
 {
     protected $model = null;
     protected $blade = null;
 
+    /**
+     * El constructor de la clase LoginCtrl inicializa el objeto Blade incluido en el paquete de Jenssegers\Blade para renderizar las vistas.
+     * @return void
+     */
     public function __construct()
     {
         $this->blade = new Blade(VIEW_PATH, CACHE_PATH);
     }
 
     /**
-     * Devuelve un objeto de tipo Tareas
-     *
-     * @return void
+     * Devuelve un objeto de tipo LoginCtrl
+     * @return object
      */
     public static function getInstance(): object
     {
@@ -36,7 +41,7 @@ class LoginCtrl
     }
 
     /**
-     * Muestra el formulario para iniciar sesión
+     * Muestra el formulario para iniciar sesión y valida si el usuario está en la base de datos. En caso que exista el usuario, identifica el rol y redirige a la vista correspondiente. Si hay algún error, lo almacena en el objeto GestorErrores y vuelve a mostrar el login.
      * @return string
      */
     public function login(): string
@@ -66,8 +71,7 @@ class LoginCtrl
     }
 
     /**
-     * Cierra la sesión
-     *
+     * Cierra la sesión llamando al método logout de la clase Session y redirige al login.
      * @return void
      */
     public function logout()

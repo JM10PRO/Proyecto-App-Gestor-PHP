@@ -4,7 +4,7 @@ use Jenssegers\Blade\Blade;
 
 include(HELPERS_PATH . 'GestorErrores.php');
 include(HELPERS_PATH . 'form.php');
-include(MODEL_PATH . 'tareas.php');
+include(MODEL_PATH . 'usuarios.php');
 /**
  * TareasCtrl es la clase manejadora de los eventos relacionados con las tareas
  *
@@ -12,7 +12,7 @@ include(MODEL_PATH . 'tareas.php');
  * Fecha de creación 3 diciembre 2022
  * versión 2.0
  */
-class TareasCtrl
+class UsuariosCtrl
 {
     protected $model = null;
     protected $errores = null;
@@ -25,7 +25,7 @@ class TareasCtrl
      */
     public function __construct()
     {
-        $this->model = new Tareas_Model();
+        $this->model = new Usuarios_Model();
 
         // El gestor solo sería necesario crearlo si editamos o insertamos
         // Inicializamos el gestor de errores que utilizaremos en la vista
@@ -38,10 +38,10 @@ class TareasCtrl
     }
 
     /**
-     * Devuelve un objeto de tipo TareasCtrl
-     * @return TareasCtrl
+     * Devuelve un objeto de tipo UsuariosCtrl
+     * @return UsuariosCtrl
      */
-    public static function getInstance():TareasCtrl
+    public static function getInstance():UsuariosCtrl
     {
         return new self();
     }
@@ -54,12 +54,12 @@ class TareasCtrl
      * Muestra la lista de tareas. Guarda la página que estaba visitando para volver a esa página concreta y no al principio. Por defecto, mostrará la primera página.
      * @return string
      */
-    public function Listar():string
+    public function ListarUsuarios():string
     {
         $tamano_paginas = 5;
         if (isset($_GET['pagina'])) {
             if ($_GET['pagina'] == 1) {
-                Session::redirect('/listar');
+                Session::redirect('/listarusuarios');
             } else {
                 $pagina = $_GET['pagina'];
             }
@@ -67,14 +67,14 @@ class TareasCtrl
             $pagina = 1;
         }
         $empezar_desde = ($pagina - 1) * $tamano_paginas;
-        $num_filas = $this->model->GetTareas();
-        $num_filas = count($num_filas);
+        $usuarios = $this->model->GetUsuarios();
+        $num_filas = count($usuarios);
         $total_paginas = ceil($num_filas / $tamano_paginas);
-        $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion', $empezar_desde, $tamano_paginas);
+        $usuarios = $this->model->GetUsuariosOrderByLimitePag('id', $empezar_desde, $tamano_paginas);
 
-        return $this->blade->render('listar', array(
-            'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
-            'tareas' => $tareas,
+        return $this->blade->render('listarusuarios', array(
+            'operacion' => 'Listado de usuarios - Página ' . $pagina . " de " . $total_paginas,
+            'usuarios' => $usuarios,
             'pagactual' => $pagina,
             'totalpags' => $total_paginas
         ));
@@ -150,75 +150,11 @@ class TareasCtrl
     }
 
     /**
-     * Muestra la lista de tareas pendientes. También guarda la página que estaba visitando cuando entre en alguna de las opciones, para volver a esa página concreta y no al principio. Por defecto, mostrará la primera página.
-     * @return string
-     */
-    public function ListarTareasPendientes():string
-    {
-        $tamano_paginas = 5;
-        if (isset($_GET['pagina'])) {
-            if ($_GET['pagina'] == 1) {
-                Session::redirect('/listartareaspendientes');
-            } else {
-                $pagina = $_GET['pagina'];
-            }
-        } else {
-            $pagina = 1;
-        }
-        
-        $empezar_desde = ($pagina - 1) * $tamano_paginas;
-        $tareas_p = $this->model->GetTareasWhere('estado','P');
-        $num_filas = count($tareas_p);
-        $total_paginas = ceil($num_filas / $tamano_paginas);
-        $tareas = $this->model->GetTareasWhereOrderByLimitePag('estado','P','fecharealizacion',$empezar_desde, $tamano_paginas);
-
-        return $this->blade->render('listar', array(
-            'operacion' => 'Listado de tareas pendientes - Página ' . $pagina . " de " . $total_paginas,
-            'tareas' => $tareas,
-            'pagactual' => $pagina,
-            'totalpags' => $total_paginas
-        ));
-    }
-
-    /**
-     * Muestra los detalles de la tarea seleccionada. Captura el id para mostrar toda la información solo la tarea selecionada. También guarda la página que estaba visitando para volver a esa página concreta y no al principio.
-     *
-     * @return string
-     */
-    public function DetallesTarea():string
-    {
-        if (!isset($_GET['id'])) {
-            // No existe la tarea, error
-            return $this->blade->render('edit_error', [
-                'descripcion_error' => 'No existe la tarea seleccionada'
-            ]);
-        }
-
-        // Han indicado el id
-        $id = $_GET['id'];
-
-        $tarea = $this->model->GetTarea($id);
-
-        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
-        if (isset($_GET['pagina'])) {
-
-            $pagina = $_GET['pagina'];
-        } else {
-            $pagina = 1;
-        }
-
-        return $this->blade->render('detallestarea', array(
-            'tarea' => $tarea,
-            'pagina' => $pagina
-        ));
-    }
-
-    /**
      * Permite modificar los datos de la tarea seleccionada. También guarda la página que estaba visitando para volver a esa página concreta y no al principio.
      *
      * @return string
      */
-    public function Edit():string
+    public function EditarUsuario():string
     {
         if (!isset($_GET['id'])) {
             // No existe la tarea, error
@@ -242,17 +178,17 @@ class TareasCtrl
         if (!$_POST) {
             // Primera vez.
             // Leo el regitro y muestro los datos
-            $tarea = $this->model->GetTarea($id);
-            if (!$tarea) {
-                // No existe la tarea, error
+            $usuario = $this->model->GetUsuario($id);
+            if (!$usuario) {
+                // No existe la usuario, error
                 return $this->blade->render('edit_error', [
-                    'descripcion_error' => 'No existe la tarea seleccionada.'
+                    'descripcion_error' => 'No existe el usuario seleccionada.'
                 ]);
             } else {
                 // Mostramos los datos
-                return $this->blade->render('edit', [
-                    'operacion' => 'Edición',
-                    'tarea' => $tarea,
+                return $this->blade->render('editarusuario', [
+                    'operacion' => 'Edición de usuario',
+                    'usuario' => $usuario,
                     'pagina' => $pagina,
                     'errores' => $this->errores
                 ]);

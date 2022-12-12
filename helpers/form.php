@@ -13,7 +13,7 @@ if (!function_exists('VPost')) {
      * @param string $default   Valor por defecto en caso de no existir
      * @return string
      */
-    function VPost($campo, $default = '')
+    function VPost($campo, $default = ''):string
     {
         if (isset($_POST[$campo])) {
             return $_POST[$campo];
@@ -24,7 +24,13 @@ if (!function_exists('VPost')) {
 }
 
 if (!function_exists('validarNie')) {
-    function validarNie($dni)
+    /**
+     * Valida el DNI o NIF que se pasa por parámetro. Retorna true si es válido y false en caso contrario.
+     *
+     * @param string $dni
+     * @return boolean
+     */
+    function validarNie($dni):bool
     {
         $dnisL = substr($dni, 0, -1);
         $letra = substr($dni, -1);
@@ -44,26 +50,19 @@ if (!function_exists('validarNie')) {
     }
 }
 
-if (!function_exists('validar_fecha_espanol')) {
-    function validar_fecha_espanol($fecha)
+if (!function_exists('validarFecha')) {
+    /**
+     * Valida si el string pasado por parámetro es una fecha válida en el formato dd-mm-aaaa.
+     *
+     * @param string $fecha
+     * @return void
+     */
+    function validarFecha($fecha)
     {
         $valores = explode('-', $fecha);
         if (count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])) {
             return true;
         }
         return false;
-    }
-}
-
-if (!function_exists('validar_fichero_subido')) {
-    function validar_fichero_subido($fichero)
-    {
-        $fichero_subido = ASSETS_PATH . 'uploads/' . basename($fichero['name']);
-
-        if (move_uploaded_file($fichero['tmp_name'], $fichero_subido)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

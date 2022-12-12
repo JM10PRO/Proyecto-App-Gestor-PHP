@@ -24,8 +24,9 @@ require __DIR__ . '/vendor/autoload.php'; // Autocargador para los componentes i
 require __DIR__ . '/ctes.php'; // definimos constantes que facilitan el trabajo
 
 include(MODEL_PATH . 'Session.php');     // Clase session
-include(CTRL_PATH . 'LoginCtrl.php');      // Controlador de tarea
+include(CTRL_PATH . 'LoginCtrl.php');      // Controlador de login
 include(CTRL_PATH . 'TareasCtrl.php');      // Controlador de tarea
+include(CTRL_PATH . 'UsuariosCtrl.php');      // Controlador de usuarios
 
 
 // Habilitamos errores detallados para que nos informe de cualquier contratiempo
@@ -69,16 +70,28 @@ $app->get('/listar', function (Request $request, Response $response, $args) {
     return (new TareasCtrl())->Listar();
 });
 
-// Listar tareas pendientes admin
-$app->get('/listartareaspendientes', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
-    return (new TareasCtrl())->ListarTareasPendientes();
-});
-
 // Nueva tarea admin
 $app->any('/nuevatarea', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
     return (new TareasCtrl())->NuevaTarea();
+});
+
+// Listar tareas pendientes admin
+$app->get('/listartareaspendientes', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->ListarTareasPendientes();
+});
+
+// Listar usuarios admin
+$app->get('/listarusuarios', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new UsuariosCtrl())->ListarUsuarios();
+});
+
+// Editar usuario admin
+$app->get('/editarusuario', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new UsuariosCtrl())->EditarUsuario();
 });
 
 // Ver detalles de la tarea admin
@@ -115,7 +128,7 @@ $app->get('/operariolistar', function (Request $request, Response $response, $ar
 
 // Listar tareas pendientes operario
 $app->get('/operariolistartareaspendientes', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyLogged();
+    Session::getInstance()->onlyOperarioLogged();
     return (new TareasCtrl())->operarioListarTareasPendientes();
 });
 

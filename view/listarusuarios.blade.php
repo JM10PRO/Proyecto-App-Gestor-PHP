@@ -15,25 +15,19 @@
         <thead>
             <tr>
                 <td>Id</td>
-                <td>NIF</td>
-                <td>Persona de contacto</td>
-                <td>Estado de la tarea</td>
-                <td>Operario</td>
-                <td>Fecha de realización</td>
-                <td>Descripción</td>
+                <td>Nombre usuario</td>
+                <td>Contraseña</td>
+                <td>Rol</td>
                 <td>Opciones</td>
             </tr>
         </thead>
         <tbody class="table-group-divider">
-            @foreach($tareas as $tarea)
+            @foreach($usuarios as $usuario)
             <tr>
-                <td>{{$tarea['id']}}</td>
-                <td>{{$tarea['nif']}}</td>
-                <td>{{$tarea['personacontacto']}}</td>
-                <td>{{$tarea['estado']}}</td>
-                <td>{{$tarea['operario']}}</td>
-                <td>{{$tarea['fecharealizacion']}}</td>
-                <td>{{$tarea['descripcion']}}</td>
+                <td>{{$usuario['id']}}</td>
+                <td>{{$usuario['usuario']}}</td>
+                <td>{{$usuario['password']}}</td>
+                <td>{{$usuario['rol']}}</td>
                 <td>
                     <a class="btn btn-secondary" href="<?= BASE_URL ?>detalles?id={{$tarea['id']}}&pagina={{$pagactual}}">Detalles</a>
                     <a class="btn btn-primary" href="<?= BASE_URL ?>edit?id={{$tarea['id']}}&pagina={{$pagactual}}">Modificar</a>
