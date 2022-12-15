@@ -7,6 +7,10 @@ class Db
 {
 	public $pdo = null;
 	private static $_instance = null;
+	protected $host = 'localhost';
+	protected $db = 'tareas';
+	protected $user = 'root';
+
 
 	/**
 	 * Constructor privado

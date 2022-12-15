@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 // Si utilizamos como servidor el interprete de php ejecutando en el terminal
 // php -S localhost:8000
 define('BASE_URL', 'http://localhost:3000/index.php/');
-// define('BASE_URL', 'http://localhost/appPHP/index.php/');
+// define('BASE_URL', 'http://localhost/appPHP/index.php/login/');
 
 require __DIR__ . '/vendor/autoload.php'; // Autocargador para los componentes instalados desde composer (en este caso Slim y blade)
 require __DIR__ . '/ctes.php'; // definimos constantes que facilitan el trabajo
@@ -38,9 +38,14 @@ include(CTRL_PATH . 'UsuariosCtrl.php');      // Controlador de usuarios
 $app = new \Slim\App(['settings' => ['displayErrorDetails' => true,],]);
 
 // Definimos rutas que procesamos
-// RUTA PARA EL INICIO DE LA APLICACIÓN, REDIRIGE A LOGIN
+// RUTA PARA EL INICIO DE LA APLICACIÓN
 $app->any('/', function (Request $request, Response $response, $args) {
-    return LoginCtrl::getInstance()->login();
+    Session::getInstance()->onlyLogged();
+    if(Session::getInstance()->isAdmin()){
+        Session::redirect('/listar');
+    }elseif(Session::getInstance()->isOperario()){
+        Session::redirect('/operariolistar');
+    }
 });
 
 //
@@ -49,12 +54,13 @@ $app->any('/', function (Request $request, Response $response, $args) {
 
 // Página de login (observad que entramos por get/post/put/... al poner any())
 $app->any('/login', function (Request $request, Response $response, $args) {
+    
     return LoginCtrl::getInstance()->login();
 });
 
 // Página de logout
 $app->get('/logout', function (Request $request, Response $response, $args) {
-    LoginCtrl::getInstance()->logout();
+    return LoginCtrl::getInstance()->logout();
 });
 
 
