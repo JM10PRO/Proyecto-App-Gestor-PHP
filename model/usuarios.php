@@ -49,4 +49,15 @@ class Usuarios_Model
     {
         return DB::getInstance()->find('usuarios', $id);
     }
+
+    /**
+     * Actualiza los datos almacenados de una tarea
+     * @param int $id
+     * @param array $tarea
+     */
+    public function Update($id, $usuario)
+    {
+        // En construcción
+        return Db::getInstance()->update('usuarios', $usuario, $id);
+    }
 }

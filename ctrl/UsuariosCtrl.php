@@ -159,7 +159,7 @@ class UsuariosCtrl
         if (!isset($_GET['id'])) {
             // No existe la tarea, error
             return $this->blade->render('edit_error', [
-                'descripcion_error' => 'No existe la tarea seleccionada'
+                'descripcion_error' => 'No existe el usuario seleccionado'
             ]);
         }
 
@@ -195,41 +195,27 @@ class UsuariosCtrl
             }
         } else {
             // Filtrar datos
-            $this->FiltraCamposPost();
+            $this->FiltraCamposPostUsuario();
 
             // Creamos el objeto tarea que es el que se utiliza en el formulario
             // Lo creamos a partir de los datos recibidos del POST
-            $tarea = array(
-                'nif' =>  VPost('nif'),
-                'personacontacto' => VPost('personacontacto'),
-                'telefono' => VPost('telefono'),
-                'correo' => VPost('correo'),
-                'poblacion' => VPost('poblacion'),
-                'codpostal' => VPost('codpostal'),
-                'provincia' => VPost('provincia'),
-                'direccion' => VPost('direccion'),
-                'estado' => VPost('estado'),
-                'fechacreacion' => VPost('fechacreacion'),
-                'operario' => VPost('operario'),
-                'fecharealizacion' => VPost('fecharealizacion'),
-                'anotacionanterior' => VPost('anotacionanterior'),
-                'anotacionposterior' => VPost('anotacionposterior'),
-                'descripcion' => VPost('descripcion'),
-                'ficheroresumen' => VPost('ficheroresumen'),
-                'fotos' => VPost('fotos'),
+            $usuario = array(
+                'nombre' =>  VPost('nombre'),
+                'password' => VPost('password'),
+                'rol' => VPost('rol')
             );
 
             if ($this->errores->HayErrores()) {
                 // Mostrar ventana de nuevo
                 return $this->blade->render('edit', array(
                     'operacion' => 'Edición',
-                    'tarea' => $tarea,
+                    'usuario' => $usuario,
                     'pagina' => $pagina,
                     'errores' => $this->errores
                 ));
             } else {
-                // Guardamos la tarea
-                $this->model->Update($id, $tarea);
+                // Guardamos el usuario
+                $this->model->Update($id, $usuario);
                 return $this->blade->render('msg', array(
                     'descripcion' => "Se ha guardado la tarea",
                     'pagina' => $pagina
@@ -491,90 +477,19 @@ class UsuariosCtrl
      * Realiza el filtrado de campos y almacena los errores en el gestor de errores
      * @return void
      */
-    public function FiltraCamposPost():void
+    public function FiltraCamposPostUsuario():void
     {
-        // Filtramos el nif
-        if (VPost('nif') == '') {
-            $this->errores->AnotaError('nif', 'El campo NIF es obligatorio');
-        } elseif (strlen(VPost('nif')) < 9 || strlen(VPost('nif')) > 9) {
-            $this->errores->AnotaError('nif', 'El NIF debe tener 8 dígitos y una letra');
-        } elseif (!validarNie(VPost('nif'))) {
-            $this->errores->AnotaError('nif', 'El NIF no es correcto');
+        // Filtramos el nombre del usuario
+        if (VPost('nombre') == '') {
+            $this->errores->AnotaError('nombre', 'Se debe introducir el nombre');
         }
-
-        // Filtramos el nombre de la persona de contacto
-        if (VPost('personacontacto') == '') {
-            $this->errores->AnotaError('personacontacto', 'Se debe introducir el nombre');
+        // Filtramos el nombre del usuario
+        if (VPost('password') == '') {
+            $this->errores->AnotaError('password', 'Se debe introducir una contraseña');
         }
-
-        // Filtramos el telefono
-        if (VPost('telefono') == '') {
-            $this->errores->AnotaError('telefono', 'Se debe introducir un teléfono (intrduzca todos los números juntos)');
-        } elseif (!is_string($_POST['telefono'])) {
-            $this->errores->AnotaError('telefono', "Compruebe el número de teléfono (intrduzca todos los números juntos)");
-        } elseif (strlen(VPost('telefono')) < 9) {
-            $this->errores->AnotaError('telefono', 'El teléfono debe tener 9 digitos');
-        }
-
-        // Filtramos el correo
-        if (VPost('correo') == '') {
-            $this->errores->AnotaError('correo', 'El correo es obligatorio');
-        } elseif (filter_input(INPUT_POST, 'correo', FILTER_VALIDATE_EMAIL) == '') {
-            $this->errores->AnotaError('correo', "El correo no es válido");
-        }
-
-        // Filtramos la población
-        if (VPost('poblacion') == '') {
-            $this->errores->AnotaError('poblacion', 'Debe indicar la población');
-        }
-
-        // Filtramos el código postal
-        if (VPost('codpostal') == '') {
-            $this->errores->AnotaError('codpostal', 'Se debe introducir el código postal');
-        } elseif (strlen(VPost('codpostal')) != 5) {
-            $this->errores->AnotaError('codpostal', 'El código postal debe tener 5 números');
-        }
-
-        // Filtramos la provincia
-        if (VPost('provincia') == '') {
-            $this->errores->AnotaError('provincia', 'Se debe indicar la provincia');
-        }
-
-        // Filtramos la dirección
-        if (VPost('direccion') == '') {
-            $this->errores->AnotaError('direccion', 'Se debe introducir texto');
-        }
-
-        // Filtramos el estado de la tarea
-        if (VPost('estado') == '') {
-            $this->errores->AnotaError('estado', 'Se debe seleccionar una de las opciones');
-        } elseif (VPost('estado') != "B" && VPost('estado') != "P" && VPost('estado') != "R" && VPost('estado') != "C") {
-            $this->errores->AnotaError('estado', "Por favor, indica el estado de la tarea");
-        }
-
-        // Filtramos y definimos la fecha de creación de la tarea
-        $_POST['fechacreacion'] = date("d-m-Y");
-        if (VPost('fechacreacion') == '') {
-            $this->errores->AnotaError('fechacreacion', 'Se debe introducir una fecha');
-        }
-
-        // Filtramos el operario
-        if (VPost('operario') == '') {
-            $this->errores->AnotaError('operario', 'Se debe indicar el operario');
-        } elseif (is_numeric(VPost('operario'))) {
-            $this->errores->AnotaError('operario', "Por favor, introduce un nombre sin números ni carácteres especiales");
-        } elseif (strlen(VPost('operario')) < 3) {
-            $this->errores->AnotaError('operario', "Por favor, introduce el nombre");
-        }
-
-        $validarFechaRealizacion = validarFecha(VPost('fecharealizacion'));
-
-        if (VPost('fecharealizacion') == '') {
-            $this->errores->AnotaError('fecharealizacion', 'Se debe introducir una fecha');
-        } elseif (!$validarFechaRealizacion) {
-            $this->errores->AnotaError('fecharealizacion', 'Introduzca una fecha válida');
-        } elseif (VPost('fecharealizacion') < date("Y-m-d")) {
-            $this->errores->AnotaError('fecharealizacion', 'La fecha de realizacíon debe ser posterior a hoy');
+        // Filtramos el nombre del usuario
+        if (VPost('rol') == '') {
+            $this->errores->AnotaError('rol', 'Se debe introducir el rol');
         }
     }
 

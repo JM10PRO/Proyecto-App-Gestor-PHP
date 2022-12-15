@@ -13,11 +13,11 @@
             </p>
             <p>
                 <label for="password">Contraseña:</label>
-                <input type="text" name="password" value="{{$tarea['password']}}"> <?= $errores->ErrorFormateado('password'); ?>
+                <input type="text" name="password" value="{{$usuario['password']}}"> <?= $errores->ErrorFormateado('password'); ?>
             </p>
             <p>
                 <label for="rol">Rol asignado:</label>
-                <input type="text" name="rol" value="{{$tarea['rol']}}"> <?= $errores->ErrorFormateado('rol'); ?>
+                <input type="text" name="rol" value="{{$usuario['rol']}}"> <?= $errores->ErrorFormateado('rol'); ?>
             </p>
         </fieldset>
         <button type="submit">Enviar</button> <br><br>

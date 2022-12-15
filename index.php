@@ -95,7 +95,7 @@ $app->get('/listarusuarios', function (Request $request, Response $response, $ar
 });
 
 // Editar usuario admin
-$app->get('/editarusuario', function (Request $request, Response $response, $args) {
+$app->any('/editarusuario', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
     return (new UsuariosCtrl())->EditarUsuario();
 });

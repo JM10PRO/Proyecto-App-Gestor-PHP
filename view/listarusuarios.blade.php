@@ -29,9 +29,9 @@
                 <td>{{$usuario['password']}}</td>
                 <td>{{$usuario['rol']}}</td>
                 <td>
-                    <a class="btn btn-secondary" href="<?= BASE_URL ?>detalles?id={{$tarea['id']}}&pagina={{$pagactual}}">Detalles</a>
-                    <a class="btn btn-primary" href="<?= BASE_URL ?>edit?id={{$tarea['id']}}&pagina={{$pagactual}}">Modificar</a>
-                    <a class="btn btn-danger" href="<?= BASE_URL ?>confirmardelete?id={{$tarea['id']}}&pagina={{$pagactual}}">Borrar</a>
+                    <!-- <a class="btn btn-secondary" href="<?= BASE_URL ?>detalles?id={{$tarea['id']}}&pagina={{$pagactual}}">Detalles</a> -->
+                    <a class="btn btn-primary" href="<?= BASE_URL ?>editarusuario?id={{$usuario['id']}}&pagina={{$pagactual}}">Modificar</a>
+                    <a class="btn btn-danger" href="<?= BASE_URL ?>confirmardelete?id={{$usuario['id']}}&pagina={{$pagactual}}">Borrar</a>
                 </td>
             </tr>
             @endforeach

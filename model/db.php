@@ -18,7 +18,7 @@ class Db
 	private function __construct()
 	{
 		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-		$this->pdo = new PDO('mysql:host=localhost;dbname=tareas', 'root', '', $pdo_options);
+		$this->pdo = new PDO('mysql:host=localhost;dbname=tareasexamen', 'root', '', $pdo_options);
 	}
 
 	/**
