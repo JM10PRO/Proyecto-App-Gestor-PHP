@@ -41,7 +41,7 @@ class UsuariosCtrl
      * Devuelve un objeto de tipo UsuariosCtrl
      * @return UsuariosCtrl
      */
-    public static function getInstance():UsuariosCtrl
+    public static function getInstance(): UsuariosCtrl
     {
         return new self();
     }
@@ -54,8 +54,25 @@ class UsuariosCtrl
      * Muestra la lista de tareas. Guarda la página que estaba visitando para volver a esa página concreta y no al principio. Por defecto, mostrará la primera página.
      * @return string
      */
-    public function ListarUsuarios():string
+    public function ListarUsuarios(): string
     {
+        if (isset($_GET['adduser'])) {
+            $this->FiltraCamposGetUsuario();
+            // Creamos el objeto tarea que es el que se utiliza en el formulario
+            // Lo creamos a partir de los datos recibidos del GET
+            $usuario = array(
+                'usuario' =>  VGet('usuario'),
+                'password' => VGet('password'),
+                'rol' => VGet('rol')
+            );
+
+            if (!$this->errores->HayErrores()) {
+                // Guardamos el usuario
+                $this->model->Add($usuario);
+                Session::redirect('/listarusuarios');
+            }
+        }
+
         $tamano_paginas = 5;
         if (isset($_GET['pagina'])) {
             if ($_GET['pagina'] == 1) {
@@ -76,85 +93,17 @@ class UsuariosCtrl
             'operacion' => 'Listado de usuarios - Página ' . $pagina . " de " . $total_paginas,
             'usuarios' => $usuarios,
             'pagactual' => $pagina,
-            'totalpags' => $total_paginas
+            'totalpags' => $total_paginas,
+            'errores' => $this->errores,
         ));
     }
 
     /**
-     * Muestra el formulario para registrar una nueva tarea
-     * @return string
-     */
-    public function NuevaTarea():string
-    {
-        if (!$_POST) {
-            // Primera vez.
-            $tarea = array(
-                'nif' =>  '',
-                'personacontacto' => '',
-                'telefono' => '',
-                'correo' => '',
-                'poblacion' => '',
-                'codpostal' => '',
-                'provincia' => '',
-                'direccion' => '',
-                'estado' => '',
-                'fechacreacion' => '',
-                'operario' => '',
-                'fecharealizacion' => '',
-                'anotacionanterior' => '',
-                'anotacionposterior' => '',
-                'descripcion' => '',
-                'ficheroresumen' => '',
-                'fotos' => ''
-            );
-        } else {
-            // Filtrar datos
-            $this->FiltraCamposPost();
-
-            // Creamos el objeto tarea que es el que se utiliza en el formulario
-            //- Lo creamos a partir de los datos recibidos del POST
-            $tarea = array(
-                'nif' =>  VPost('nif'),
-                'personacontacto' => VPost('personacontacto'),
-                'telefono' => VPost('telefono'),
-                'correo' => VPost('correo'),
-                'poblacion' => VPost('poblacion'),
-                'codpostal' => VPost('codpostal'),
-                'provincia' => VPost('provincia'),
-                'direccion' => VPost('direccion'),
-                'estado' => VPost('estado'),
-                'fechacreacion' => VPost('fechacreacion'),
-                'operario' => VPost('operario'),
-                'fechacreacion' => VPost('fechacreacion'),
-                'anotacionanterior' => VPost('anotacionanterior'),
-                'anotacionposterior' => VPost('anotacionposterior'),
-                'descripcion' => VPost('descripcion'),
-                'ficheroresumen' => VPost('ficheroresumen'),
-                'fotos' => VPost('fotos')
-            );
-
-            if (!$this->errores->HayErrores()) {
-                // Guardamos la tarea y finalizamos
-                $this->model->Add($tarea);
-                Session::redirect('/listar');
-            }
-        }
-        // Mostramos los datos
-        return $this->blade->render('nuevatarea', array(
-            'operacion' => 'Registrar nueva tarea',
-            'tarea' => $tarea,
-            'errores' => $this->errores
-        ));
-        // // En un controlador real esto haría más cosas
-        // return $this->blade->render('nuevatarea');
-    }
-
-    /**
-     * Permite modificar los datos de la tarea seleccionada. También guarda la página que estaba visitando para volver a esa página concreta y no al principio.
+     * Permite modificar los datos del usuario seleccionada. También guarda la página que estaba visitando para volver a esa página concreta y no al principio.
      *
      * @return string
      */
-    public function EditarUsuario():string
+    public function EditarUsuario(): string
     {
         if (!isset($_GET['id'])) {
             // No existe la tarea, error
@@ -196,32 +145,31 @@ class UsuariosCtrl
         } else {
             // Filtrar datos
             $this->FiltraCamposPostUsuario();
-
             // Creamos el objeto tarea que es el que se utiliza en el formulario
             // Lo creamos a partir de los datos recibidos del POST
             $usuario = array(
-                'nombre' =>  VPost('nombre'),
+                'usuario' =>  VPost('usuario'),
                 'password' => VPost('password'),
                 'rol' => VPost('rol')
             );
 
-            if ($this->errores->HayErrores()) {
-                // Mostrar ventana de nuevo
-                return $this->blade->render('edit', array(
-                    'operacion' => 'Edición',
-                    'usuario' => $usuario,
-                    'pagina' => $pagina,
-                    'errores' => $this->errores
-                ));
-            } else {
+            if (!$this->errores->HayErrores()) {
                 // Guardamos el usuario
                 $this->model->Update($id, $usuario);
-                return $this->blade->render('msg', array(
-                    'descripcion' => "Se ha guardado la tarea",
-                    'pagina' => $pagina
+                return $this->blade->render('msgusuario', array(
+                    'descripcion' => "Se ha guardado el usuario",
+                    'pagina' => $pagina,
+                    'color' => '#47cc4b'
                 ));
             }
         }
+        // Mostrar ventana de nuevo
+        return $this->blade->render('editarusuario', array(
+            'operacion' => 'Edición de usuario',
+            'usuario' => $usuario,
+            'pagina' => $pagina,
+            'errores' => $this->errores
+        ));
     }
 
     /**
@@ -230,23 +178,34 @@ class UsuariosCtrl
      */
     public function ConfirmarDelete(): string
     {
-        if (isset($_GET['id'])) {
-            // Han indicado el id
-            $id = $_GET['id'];
-        }
-
-        $tarea = $this->model->GetTarea($id);
-
         // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
         if (isset($_GET['pagina'])) {
-
             $pagina = $_GET['pagina'];
         } else {
             $pagina = 1;
         }
 
-        return $this->blade->render('confirmardelete', array(
-            'tarea' => $tarea,
+        if (isset($_GET['id'])) {
+            // Han indicado el id
+            $id = $_GET['id'];
+        }
+
+        $usuario = $this->model->GetUsuario($id);
+
+        $usuarioActual = Session::getUserData($_SESSION['usuario_conectado'], $_SESSION['usuario_conectado_pass']);
+
+        $id_usuario = $usuarioActual[0]['id'];
+
+        if ($id == $id_usuario) {
+            return $this->blade->render('msgusuario', [
+                'descripcion' => 'No se puede borrar a sí mismo',
+                'pagina' => $pagina,
+                'color' => '#de1c1c'
+            ]);
+        }
+
+        return $this->blade->render('confirmardeleteusuario', array(
+            'usuario' => $usuario,
             'pagina' => $pagina
         ));
     }
@@ -255,7 +214,7 @@ class UsuariosCtrl
      * Borra la tarea seleccionada después de confirmar la operación. Redirige al listado de tareas.
      * @return string
      */
-    public function Del():string
+    public function Del(): string
     {
         try {
             if (isset($_GET['id'])) {
@@ -264,7 +223,7 @@ class UsuariosCtrl
                 // Si no existe el id se lanza excepción
                 $this->model->Del($id);
                 // Notificamos el borrado de la tarea, mostrando la lista
-                return $this->Listar();
+                return $this->ListarUsuarios();
             } else {
                 return $this->blade->render('msg', [
                     'descripcion' => 'No se ha indicado la tarea a borrar'
@@ -282,86 +241,17 @@ class UsuariosCtrl
     // =============================
 
     /**
-     * Muestra la lista de tareas en la vista del operario. También guarda la página que estaba visitando para volver a esa página concreta y no al principio. Por defecto, mostrará la primera página.
+     * Permite a un operario modificar sus datos. También guarda la página que estaba visitando para volver a esa página concreta y no al principio.
      *
      * @return string
      */
-    public function operarioListar():string
+    public function EditarDatosOperario(): string
     {
-        $tamano_paginas = 5;
-        if (isset($_GET['pagina'])) {
-            if ($_GET['pagina'] == 1) {
-                Session::redirect('/operariolistar');
-            } else {
-                $pagina = $_GET['pagina'];
-            }
-        } else {
-            $pagina = 1;
-        }
-        $empezar_desde = ($pagina - 1) * $tamano_paginas;
-        $num_filas = $this->model->GetTareas();
-        $num_filas = count($num_filas);
-        $total_paginas = ceil($num_filas / $tamano_paginas);
-        $tareas = $this->model->GetTareasOrderByLimitePag('fecharealizacion', $empezar_desde, $tamano_paginas);
+        $usuarioActual = Session::getUserData($_SESSION['usuario_conectado'], $_SESSION['usuario_conectado_pass']);
 
-        return $this->blade->render('operariolistar', array(
-            'operacion' => 'Listado de tareas - Página ' . $pagina . " de " . $total_paginas,
-            'tareas' => $tareas,
-            'pagactual' => $pagina,
-            'totalpags' => $total_paginas
-        ));
-    }
-
-    /**
-     * Muestra la lista de tareas pendientes en la vista del operario. También guarda la página que estaba visitando cuando entre en alguna de las opciones, para volver a esa página concreta y no al principio. Por defecto, mostrará la primera página.
-     *
-     * @return string
-     */
-    public function operarioListarTareasPendientes():string
-    {
-        $tamano_paginas = 5;
-        if (isset($_GET['pagina'])) {
-            if ($_GET['pagina'] == 1) {
-                Session::redirect('/operariolistartareaspendientes');
-            } else {
-                $pagina = $_GET['pagina'];
-            }
-        } else {
-            $pagina = 1;
-        }
-        $empezar_desde = ($pagina - 1) * $tamano_paginas;
-        $tareas_p = $this->model->GetTareasWhere('estado','P');
-        $num_filas = count($tareas_p);
-        $total_paginas = ceil($num_filas / $tamano_paginas);
-        $tareas = $this->model->GetTareasWhereOrderByLimitePag('estado','P','fecharealizacion',$empezar_desde, $tamano_paginas);
-        
-        return $this->blade->render('operariolistar', array(
-            'operacion' => 'Listado de tareas pendientes - Página ' . $pagina . " de " . $total_paginas,
-            'tareas' => $tareas,
-            'pagactual' => $pagina,
-            'totalpags' => $total_paginas
-        ));
-    }
-
-    /**
-     * Muestra los detalles de la tarea seleccionada. Captura el id de latarea a mostrar y la página que estaba visualizando, para volver a esa página concreta y no al principio.
-     *
-     * @return string
-     */
-    public function DetallesTareaOperario():string
-    {
-        if (!isset($_GET['id'])) {
-            // No existe la tarea, error
-            return $this->blade->render('edit_error', [
-                'descripcion_error' => 'No existe la tarea seleccionada'
-            ]);
-        }
-
-        // Han indicado el id
-        $id = $_GET['id'];
-
-        $tarea = $this->model->GetTarea($id);
-
+        $id = $usuarioActual[0]['id'];
+        $rol = $usuarioActual[0]['rol'];
+        $usuario = $this->model->GetUsuario($id);
         // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
         if (isset($_GET['pagina'])) {
 
@@ -369,107 +259,72 @@ class UsuariosCtrl
         } else {
             $pagina = 1;
         }
-
-        return $this->blade->render('operariodetallestarea', array(
-            'tarea' => $tarea,
-            'pagina' => $pagina
-        ));
-    }
-
-    /**
-     * Permite al operario completar una tarea seleccionada (solo se permite modificar algunos datos). También guarda la página que estaba visitando cuando entre en alguna de las opciones, para volver a esa página concreta y no al principio.
-     *
-     * @return string
-     */
-    public function completarTarea():string
-    {
-        if (!isset($_GET['id'])) {
-            // No existe la tarea, error
-            return $this->blade->render('edit_error', [
-                'descripcion_error' => 'No existe la tarea seleccionada'
-            ]);
-        }
-
-        // Han indicado el id
-        $id = $_GET['id'];
-
-        // Se guarda la página que estábamos visitando en el listado para volver a la misma y no al principio 
-        if (isset($_GET['pagina'])) {
-
-            $pagina = $_GET['pagina'];
-        } else {
-            $pagina = 1;
-        }
-
 
         if (!$_POST) {
             // Primera vez.
             // Leo el regitro y muestro los datos
-            $tarea = $this->model->GetTarea($id);
-            if (!$tarea) {
-                // No existe la tarea, error
+
+            if (!$usuario) {
+                // No existe la usuario, error
                 return $this->blade->render('edit_error', [
-                    'descripcion_error' => 'No existe la tarea seleccionada.'
+                    'descripcion_error' => 'No existe el usuario seleccionado.'
                 ]);
             } else {
                 // Mostramos los datos
-                return $this->blade->render('completartarea', [
-                    'operacion' => 'Completar tarea',
-                    'tarea' => $tarea,
+                return $this->blade->render('operarioeditdata', [
+                    'operacion' => 'Modificar mis datos',
+                    'usuario' => $usuario,
                     'pagina' => $pagina,
                     'errores' => $this->errores
                 ]);
             }
         } else {
             // Filtrar datos
-            $this->FiltraCamposPostCompletarTarea($id);
-
+            $this->FiltraCamposPostUsuario();
             // Creamos el objeto tarea que es el que se utiliza en el formulario
-            // Lo creamos a partir de los datos recibidos del POST y de los datos de la tarea que estaban guardados, porque solo modificamos algunos
-            $tarea_db = $this->model->GetTarea($id);
-            if (!$tarea_db) {
-                // No existe la tarea, error
-                return $this->blade->render('edit_error', [
-                    'descripcion_error' => 'No existe la tarea seleccionada.'
-                ]);
-            } else {
-                $tarea = array(
-                    'nif' =>  $tarea_db['nif'],
-                    'personacontacto' => $tarea_db['personacontacto'],
-                    'telefono' => $tarea_db['telefono'],
-                    'correo' => $tarea_db['correo'],
-                    'poblacion' => $tarea_db['poblacion'],
-                    'codpostal' => $tarea_db['codpostal'],
-                    'provincia' => $tarea_db['provincia'],
-                    'direccion' => $tarea_db['direccion'],
-                    'estado' => $tarea_db['estado'],
-                    'fechacreacion' => $tarea_db['fechacreacion'],
-                    'operario' => $tarea_db['operario'],
-                    'fecharealizacion' => $tarea_db['fecharealizacion'],
-                    'anotacionanterior' => VPost('anotacionanterior'),
-                    'anotacionposterior' => VPost('anotacionposterior'),
-                    'descripcion' => VPost('descripcion'),
-                    'ficheroresumen' => $_FILES['ficheroresumen']['name'],
-                    'fotos' => $_FILES['fotos']['name']
-                );
-            }
+            // Lo creamos a partir de los datos recibidos del POST
+            $usuario = array(
+                'usuario' =>  VPost('usuario'),
+                'password' => VPost('password'),
+                'rol' => $rol
+            );
 
-            if ($this->errores->HayErrores()) {
-                // Mostrar ventana de nuevo
-                return $this->blade->render('completartarea', array(
-                    'operacion' => 'Completar tarea',
-                    'tarea' => $tarea,
-                    'pagina' => $pagina,
-                    'errores' => $this->errores
-                ));
-            } else {
-                // Guardamos la tarea
-                $this->model->Update($id, $tarea);
-                return $this->blade->render('operariomsg', array(
-                    'descripcion' => "Se ha guardado la tarea",
+            if (!$this->errores->HayErrores()) {
+                // Guardamos el usuario
+                $this->model->Update($id, $usuario);
+                return $this->blade->render('msgoperario', array(
+                    'descripcion' => "Se han guardado los datos",
                     'pagina' => $pagina
                 ));
             }
+        }
+        // Mostrar ventana de nuevo
+        return $this->blade->render('operarioeditdata', array(
+            'operacion' => 'Modificar mis datos',
+            'usuario' => $usuario,
+            'pagina' => $pagina,
+            'errores' => $this->errores
+        ));
+    }
+
+
+    /**
+     * Realiza el filtrado de campos y almacena los errores en el gestor de errores
+     * @return void
+     */
+    public function FiltraCamposPostUsuario(): void
+    {
+        // Filtramos el nombre del usuario
+        if (VPost('usuario') == '') {
+            $this->errores->AnotaError('usuario', 'Se debe introducir el nombre');
+        }
+        // Filtramos el nombre del usuario
+        if (VPost('password') == '') {
+            $this->errores->AnotaError('password', 'Se debe introducir una contraseña');
+        }
+        // Filtramos el nombre del usuario
+        if (isset($_POST['rol']) && VPost('rol') == '') {
+            $this->errores->AnotaError('rol', 'Se debe introducir el rol');
         }
     }
 
@@ -477,19 +332,23 @@ class UsuariosCtrl
      * Realiza el filtrado de campos y almacena los errores en el gestor de errores
      * @return void
      */
-    public function FiltraCamposPostUsuario():void
+    public function FiltraCamposGetUsuario(): void
     {
         // Filtramos el nombre del usuario
-        if (VPost('nombre') == '') {
-            $this->errores->AnotaError('nombre', 'Se debe introducir el nombre');
+        if (VGet('usuario') == '') {
+            $this->errores->AnotaError('usuario', 'Se debe introducir el nombre');
+        } elseif (strlen(VGet('usuario')) < 3) {
+            $this->errores->AnotaError('usuario', 'El nombre de usuario debe tener 3 o más carácteres');
         }
         // Filtramos el nombre del usuario
-        if (VPost('password') == '') {
+        if (VGet('password') == '') {
             $this->errores->AnotaError('password', 'Se debe introducir una contraseña');
         }
         // Filtramos el nombre del usuario
-        if (VPost('rol') == '') {
+        if (VGet('rol') == '') {
             $this->errores->AnotaError('rol', 'Se debe introducir el rol');
+        } elseif (VGet('rol') != 'admin' && VGet('rol') != 'operario') {
+            $this->errores->AnotaError('rol', 'El Rol solo puede ser admin u operario');
         }
     }
 
@@ -499,7 +358,7 @@ class UsuariosCtrl
      * @param int $id
      * @return void
      */
-    public function FiltraCamposPostCompletarTarea($id):void
+    public function FiltraCamposPostCompletarTarea($id): void
     {
         // Filtramos el estado de la tarea
         if (VPost('estado') == '') {
@@ -519,13 +378,13 @@ class UsuariosCtrl
         }
 
         //Filtramos el fichero subido
-        $this->validarFichero($_FILES['ficheroresumen'],$id,'ficheroresumen');
+        $this->validarFichero($_FILES['ficheroresumen'], $id, 'ficheroresumen');
         // if(!$this->validarFichero($_FILES['ficheroresumen'],$id,'ficheroresumen')){
         //     $this->errores->AnotaError('ficheroresumen','Error al cargar el archivo');
         // }
-        
+
         //Filtramos el fichero subido
-        $this->validarFichero($_FILES['fotos'],$id,'fotos');
+        $this->validarFichero($_FILES['fotos'], $id, 'fotos');
         // if(!$this->validarFichero($_FILES['fotos'],$id,'fotos')){
         //     $this->errores->AnotaError('fotos','Error al cargar el archivo');
         // }
@@ -541,39 +400,38 @@ class UsuariosCtrl
      */
     public function validarFichero(array $nombreFichero, int $id, string $campo): bool
     {
-        if($nombreFichero['error'] == 0){
+        if ($nombreFichero['error'] == 0) {
 
             $dir = ASSETS_PATH . "uploads/";
             $tamano_max = 30000; //kb
-            $ext_permitidas = array('doc','docx','odt','pdf','jpg','jpeg','png');
-            $ruta_carga = $dir . $id ."_". $nombreFichero['name'];
+            $ext_permitidas = array('doc', 'docx', 'odt', 'pdf', 'jpg', 'jpeg', 'png');
+            $ruta_carga = $dir . $id . "_" . $nombreFichero['name'];
             $arr_archivo = explode(".", $nombreFichero['name']);
             $extension = strtolower(end($arr_archivo));
-            
-            if(in_array($extension,$ext_permitidas)){
-                if($nombreFichero['size'] < $tamano_max * 1024){
-                    if(!file_exists($dir)){
+
+            if (in_array($extension, $ext_permitidas)) {
+                if ($nombreFichero['size'] < $tamano_max * 1024) {
+                    if (!file_exists($dir)) {
                         mkdir($dir, 0777);
                     }
-                    if(move_uploaded_file($nombreFichero['tmp_name'], $ruta_carga)){
+                    if (move_uploaded_file($nombreFichero['tmp_name'], $ruta_carga)) {
                         return true; // se ha subido correctamente
-                    }else{
+                    } else {
                         return false; // error al cargar el archivo
                     }
-                }else{
-                    $this->errores->AnotaError($campo,'El archivo excede el tamaño permitido');
+                } else {
+                    $this->errores->AnotaError($campo, 'El archivo excede el tamaño permitido');
                     return false;
                 }
-            }else{
-                $this->errores->AnotaError($campo,'Archivo no permitido');
+            } else {
+                $this->errores->AnotaError($campo, 'Archivo no permitido');
                 return false;
             }
-
-        }elseif($nombreFichero['error'] == 4){
-            $this->errores->AnotaError($campo,'No has subido archivo');
+        } elseif ($nombreFichero['error'] == 4) {
+            $this->errores->AnotaError($campo, 'No has subido archivo');
             return false;
-        }else {
-            $this->errores->AnotaError($campo,'Error en la subida del archivo');
+        } else {
+            $this->errores->AnotaError($campo, 'Error en la subida del archivo');
             return false;
         }
     }

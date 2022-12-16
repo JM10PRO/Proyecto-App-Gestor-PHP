@@ -88,8 +88,32 @@ $app->get('/listartareaspendientes', function (Request $request, Response $respo
     return (new TareasCtrl())->ListarTareasPendientes();
 });
 
+// Ver detalles de la tarea admin
+$app->get('/detalles', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->DetallesTarea();
+});
+
+// Modificar tarea
+$app->any('/edit', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->Edit();
+});
+
+// Borrar tarea
+$app->get('/del', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->Del();
+});
+
+//Confirmación borrar tarea
+$app->any('/confirmardelete', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyAdminLogged();
+    return (new TareasCtrl())->ConfirmarDelete();
+});
+
 // Listar usuarios admin
-$app->get('/listarusuarios', function (Request $request, Response $response, $args) {
+$app->any('/listarusuarios', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
     return (new UsuariosCtrl())->ListarUsuarios();
 });
@@ -100,28 +124,16 @@ $app->any('/editarusuario', function (Request $request, Response $response, $arg
     return (new UsuariosCtrl())->EditarUsuario();
 });
 
-// Ver detalles de la tarea admin
-$app->get('/detalles', function (Request $request, Response $response, $args) {
+// Borrar usuario
+$app->get('/delusuario', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
-    return (new TareasCtrl())->DetallesTarea();
+    return (new UsuariosCtrl())->Del();
 });
 
-// Modificar
-$app->any('/edit', function (Request $request, Response $response, $args) {
+//Confirmación borrar usuario
+$app->any('/confirmardeleteusuario', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyAdminLogged();
-    return (new TareasCtrl())->Edit();
-});
-
-// Borrar
-$app->get('/del', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyAdminLogged();
-    return (new TareasCtrl())->Del();
-});
-
-//Confirmación borrar tarea
-$app->any('/confirmardelete', function (Request $request, Response $response, $args) {
-    Session::getInstance()->onlyAdminLogged();
-    return (new TareasCtrl())->ConfirmarDelete();
+    return (new UsuariosCtrl())->ConfirmarDelete();
 });
 
 // ====OPERARIO====
@@ -136,6 +148,12 @@ $app->get('/operariolistar', function (Request $request, Response $response, $ar
 $app->get('/operariolistartareaspendientes', function (Request $request, Response $response, $args) {
     Session::getInstance()->onlyOperarioLogged();
     return (new TareasCtrl())->operarioListarTareasPendientes();
+});
+
+// Listar tareas pendientes operario
+$app->any('/operarioeditdata', function (Request $request, Response $response, $args) {
+    Session::getInstance()->onlyOperarioLogged();
+    return (new UsuariosCtrl())->EditarDatosOperario();
 });
 
 // Ver detalles de la tarea operario

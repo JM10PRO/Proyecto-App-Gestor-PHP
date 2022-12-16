@@ -251,7 +251,7 @@ class TareasCtrl
             } else {
                 // Mostramos los datos
                 return $this->blade->render('edit', [
-                    'operacion' => 'Edición',
+                    'operacion' => 'Modificar tarea',
                     'tarea' => $tarea,
                     'pagina' => $pagina,
                     'errores' => $this->errores
@@ -286,7 +286,7 @@ class TareasCtrl
             if ($this->errores->HayErrores()) {
                 // Mostrar ventana de nuevo
                 return $this->blade->render('edit', array(
-                    'operacion' => 'Edición',
+                    'operacion' => 'Modificar tarea',
                     'tarea' => $tarea,
                     'pagina' => $pagina,
                     'errores' => $this->errores
@@ -323,7 +323,7 @@ class TareasCtrl
             $pagina = 1;
         }
 
-        return $this->blade->render('confirmardelete', array(
+        return $this->blade->render('confirmardeleteusuario', array(
             'tarea' => $tarea,
             'pagina' => $pagina
         ));

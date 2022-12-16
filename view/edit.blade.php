@@ -3,7 +3,7 @@
 @section('cuerpo')
 
 <h1>{{$operacion}}</h1>
-<div style="float:left">
+<div style="float:left; background-color: #0da4a0;">
     <form enctype="multipart/form-data" method="post">
         <fieldset>
             <legend>Datos persona de contacto:</legend>

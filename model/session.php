@@ -63,6 +63,7 @@ class Session
              $_SESSION[self::IDX_ESTA_DENTRO] = true;
              $_SESSION[self::HORA_CONEX] = date('H:i');
              $_SESSION['usuario_conectado'] = $user;
+             $_SESSION['usuario_conectado_pass'] = $passwd;
              $_SESSION['rol'] = $credenciales[0][3];
              if($_SESSION['rol'] == 'admin'){
                 $_SESSION[self::USER_ROL] = 'admin';

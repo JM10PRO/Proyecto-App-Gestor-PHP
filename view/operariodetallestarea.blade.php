@@ -6,7 +6,7 @@
  * que contiene las tareas a mostrar
  */
 ?>
-@extends('_template')
+@extends('operario_template')
 
 @section('cuerpo')
 <h1>Detalles de la tarea</h1>

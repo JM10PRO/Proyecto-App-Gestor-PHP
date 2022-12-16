@@ -23,6 +23,25 @@ if (!function_exists('VPost')) {
     }
 }
 
+if (!function_exists('VGet')) {
+    /**
+     * Devuelve el valor de una variable enviada por POST. Devolverá el valor
+     * por defecto en caso de no existir.
+     *
+     * @param string $campo
+     * @param string $default   Valor por defecto en caso de no existir
+     * @return string
+     */
+    function VGet($campo, $default = ''):string
+    {
+        if (isset($_GET[$campo])) {
+            return $_GET[$campo];
+        } else {
+            return $default;
+        }
+    }
+}
+
 if (!function_exists('validarNie')) {
     /**
      * Valida el DNI o NIF que se pasa por parámetro. Retorna true si es válido y false en caso contrario.

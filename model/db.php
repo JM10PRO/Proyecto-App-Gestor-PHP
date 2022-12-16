@@ -18,7 +18,7 @@ class Db
 	private function __construct()
 	{
 		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-		$this->pdo = new PDO('mysql:host=localhost;dbname=tareasexamen', 'root', '', $pdo_options);
+		$this->pdo = new PDO('mysql:host=localhost;dbname=tareas', 'root', '', $pdo_options);
 	}
 
 	/**
@@ -121,18 +121,7 @@ class Db
 	 */
 	public function delete(string $tabla, int $id): bool
 	{
-		// $nombre_campos = implode(',', array_keys($campos)); // => c1, c2,...
-		// $valores_campos = array_values($campos); // => v1, v2, ..
-		// $interrogaciones = implode(',', array_map(fn ($v) => '?', $campos));
-
 		$sql = "DELETE FROM $tabla WHERE id=$id";
-
-		/*
-		// Para depuración
-		echo "<pre>SQL: $sql \n \nValores \n";
-		print_r($valores_campos);
-		exit;
-		*/
 
 		return $this->pdo
 			->prepare($sql)
@@ -163,7 +152,7 @@ class Db
 		return $pdo_stm->fetch(PDO::FETCH_ASSOC);
 	}
 
-	// Aquí irian otras funciones útiles para trabajar con la base de datos
+	// Aquí irían otras funciones útiles para trabajar con la base de datos
 
 	/**
 	 * Devuelve el registro de la tabla indicada cuyo valor es igual que el indicado en $search_value 
